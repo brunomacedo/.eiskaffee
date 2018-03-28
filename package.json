@@ -1,0 +1,20 @@
+{
+  "name": "bash-update-git",
+  "version": "1.0.1",
+  "description": "Update all repositories from a folder using bash.",
+  "main": ".bash_profile",
+  "files": [
+    ".bash_profile"
+  ],
+ "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunomacedo/bash-update-git.git"
+  },
+  "keywords": [],
+  "author": "Bruno Macedo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brunomacedo/bash-update-git/issues"
+  },
+  "homepage": "https://github.com/brunomacedo/bash-update-git#readme"
+}
