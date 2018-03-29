@@ -18,7 +18,7 @@ checkGit() {
       echo "Remote does not exists"
       cd ..
     fi
-  else 
+  else
     echo "Repository does not exists"
   fi
 }
@@ -27,7 +27,7 @@ update() {
   folders=($(ls))
   for dirName in ${!folders[@]}; do
     echo ""
-    
+
     cd ${folders[$dirName]}
     echo "Opening ${folders[$dirName]}"
 
@@ -36,7 +36,7 @@ update() {
     cd ..
     echo "Closing"
     echo ""
-	done
+  done
 }
 
 logs() {
