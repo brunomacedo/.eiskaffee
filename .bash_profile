@@ -6,28 +6,46 @@ alias push='git push'
 alias pull='git pull'
 alias discart='git checkout -f'
 alias clone='git clone'
-alias hosts='code "/c/drivers/etc/hosts"'
+
+alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
+alias www='cd /c/www'
+alias templates='cd /c/www/templates'
+alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
+
+alias dev='gulp dev'
+alias prod='gulp prod'
+alias open='gulp open'
+alias run='gulp run'
+alias stop='gulp kill'
+alias help='gulp help'
 
 checkGit() {
-  if [ -d .git ]; then
-    cd .git
-    if [ -f FETCH_HEAD ]; then
+  if [ -d ".git" ]; then
+    cd ".git"
+    if [ -f "FETCH_HEAD" ]; then
       cd ..
       pull
     else
       echo "Remote does not exists"
       cd ..
     fi
-  else
+  else 
     echo "Repository does not exists"
   fi
 }
 
 update() {
-  folders=($(ls))
+  if [ -d "templates" ]; then
+    templates
+    enterTemplates="yes"
+  else
+    enterTemplates="no"
+  fi
+
+  folders=($(ls -d */ | cut -f1 -d'/'))
   for dirName in ${!folders[@]}; do
     echo ""
-
+    
     cd ${folders[$dirName]}
     echo "Opening ${folders[$dirName]}"
 
@@ -36,7 +54,11 @@ update() {
     cd ..
     echo "Closing"
     echo ""
-  done
+	done
+
+  if [ $enterTemplates = "yes" ]; then
+    www
+  fi  
 }
 
 logs() {
