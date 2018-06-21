@@ -88,3 +88,7 @@ changes() {
     echo "Has commits"
   fi
 }
+
+bump() {
+  npm version $1 -m "Bumped to version %s"
+}
