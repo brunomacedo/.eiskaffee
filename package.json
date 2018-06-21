@@ -1,12 +1,12 @@
 {
   "name": "bash-update-git",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Update all repositories from a folder using bash.",
   "main": ".bash_profile",
   "files": [
     ".bash_profile"
   ],
- "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/brunomacedo/bash-update-git.git"
   },
