@@ -29,10 +29,10 @@ fhelp() {
   fi
 }
 
-checkGit() {
+isRemoteGit() {
   if [ -d ".git" ]; then
     cd ".git"
-    if [ -f "FETCH_HEAD" ]; then
+    if [ -f "config" ] && grep -q remote "config"; then
       cd ..
       pull
     else
@@ -40,7 +40,7 @@ checkGit() {
       cd ..
     fi
   else
-    echo "Repository does not exists"
+    echo "Repo does not exists"
   fi
 }
 
@@ -59,7 +59,7 @@ update() {
     cd ${folders[$dirName]}
     echo "Opening ${folders[$dirName]}"
 
-    checkGit
+    isRemoteGit
 
     cd ..
     echo "Closing"
