@@ -95,7 +95,7 @@ gcommit() {
 	git status -s
 
   echo ""
-  echo "You have some modified files to commit"
+  echo "You have some modified files to commit."
 	echo "Would you like to commit it? [1] Yes [2] No"
   echo ""
 	read SEND
