@@ -83,37 +83,38 @@ logs() {
 
 changes() {
   if [ -z "$(git status --porcelain)" ]; then
-    # echo "Nothing to commit"
     changed=true
   else
-    # echo "There are modified files to commit"
     changed=false
   fi
   echo "$changed"
 }
 
 gcommit() {
-	getChange=$(changes)
+	getChange="$(changes)"
 	git status -s
 
+  echo ""
+  echo "You have some modified files to commit"
 	echo "Would you like to commit it? [1] Yes [2] No"
+  echo ""
 	read SEND
 
 	if [ $SEND == "1" ]; then
 		if [ $getChange == "false" ]; then
 			git add . && git commit -m '$1' && git push
-		else
+    else
 			echo "Nothing to commit"
 		fi
 	fi
 }
 
 bump() {
-  getChange=$(changes)
+  getChange="$(changes)"
 
-  if [ $getChange ]
-    npm version $1 -m "Bumped to version %s"
+  if [ $getChange == "true" ]; then
+    npm version "$1" -m "Bumped to version %s"
+  else
+    gcommit "Before bump commit"
   fi
-
-  cherry
 }
