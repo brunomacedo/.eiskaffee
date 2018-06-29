@@ -102,6 +102,7 @@ gcommit() {
 
 	if [ $SEND == "1" ]; then
 		if [ $getChange == "false" ]; then
+      isRemoteGit
 			git add . && git commit -m "$1" && git push
     else
 			echo "Nothing to commit."
