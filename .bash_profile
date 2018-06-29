@@ -82,34 +82,38 @@ logs() {
 }
 
 changes() {
-
   if [ -z "$(git status --porcelain)" ]; then
+    # echo "Nothing to commit"
     changed=true
   else
+    # echo "There are modified files to commit"
     changed=false
   fi
-
   echo "$changed"
-
 }
 
-bump () {
-
-	test=$(changes)
-
+gcommit() {
+	getChange=$(changes)
 	git status -s
 
-	echo "Deseja comitar e enviar? [1] Sim [2] Não"
-	read ENVIO
+	echo "Would you like to commit it? [1] Yes [2] No"
+	read SEND
 
-	if [ $ENVIO == "1" ]; then
-
-		if [ $test == "false" ]; then
+	if [ $SEND == "1" ]; then
+		if [ $getChange == "false" ]; then
 			git add . && git commit -m '$1' && git push
 		else
-			echo "Nada foi comitado"
+			echo "Nothing to commit"
 		fi
-
 	fi
+}
 
+bump() {
+  getChange=$(changes)
+
+  if [ $getChange ]
+    npm version $1 -m "Bumped to version %s"
+  fi
+
+  cherry
 }
