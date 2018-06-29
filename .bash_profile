@@ -83,12 +83,16 @@ logs() {
 
 changes() {
   if [ -z "$(git status --porcelain)" ]; then
-    echo "Git clean"
+    echo "Nothing to commit"
+    changed= true
   else
-    echo "Has commits"
+    echo "There are modified files to commit"
+    changed= false
   fi
 }
 
 bump() {
-  npm version $1 -m "Bumped to version %s"
+  if changes; then
+    npm version $1 -m "Bumped to version %s"
+  fi
 }
