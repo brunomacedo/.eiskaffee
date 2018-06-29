@@ -99,18 +99,18 @@ gcommit() {
   echo ""
 	read SEND
 
-	if [ $SEND == "1" ]; then
-		if [ $getChange == "false" ]; then
+  if [ $getChange == "false" ]; then
+	  if [ $SEND == "1" ]; then
       isRemoteGit
 			git add .
       git commit -m "$1"
     else
-			echo "Nothing to commit."
+      echo ""
+      echo "Please, commit your modified files before bump version."
+      git status -s
 		fi
   else
-    echo ""
-    echo "Please, commit your modified files before bump version."
-    git status -s
+    echo "Nothing to commit."
 	fi
 }
 
@@ -121,6 +121,5 @@ bump() {
     npm version "$1" -m "Bumped to version %s"
   else
     gcommit "Before bump commit."
-    npm version "$1" -m "Bumped to version %s"
   fi
 }
