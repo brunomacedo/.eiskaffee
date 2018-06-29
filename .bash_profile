@@ -92,7 +92,6 @@ changes() {
 
 gcommit() {
 	getChange="$(changes)"
-	git status -s
 
   echo ""
   echo "You have some modified files to commit."
