@@ -107,7 +107,9 @@ gcommit() {
 			echo "Nothing to commit."
 		fi
   else
+    echo ""
     echo "Please, commit your modified files before bump version."
+    git status -s
 	fi
 }
 
@@ -116,6 +118,7 @@ bump() {
 
   if [ $getChange == "true" ]; then
     npm version "$1" -m "Bumped to version %s"
+    push
   else
     gcommit "Before bump commit."
   fi
