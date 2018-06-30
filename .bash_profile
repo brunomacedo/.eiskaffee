@@ -53,6 +53,7 @@ update() {
   fi
 
   folders=($(ls -d */ | cut -f1 -d'/'))
+  # for dirName in $folders; do
   for dirName in ${!folders[@]}; do
     echo ""
 
@@ -99,8 +100,8 @@ gcommit() {
   echo ""
 	read SEND
 
-  if [ $getChange == "false" ]; then
-	  if [ $SEND == "1" ]; then
+  if [ $getChange = "false" ]; then
+	  if [ $SEND = "1" ]; then
       isRemoteGit
 			git add .
       git commit -m "$1"
@@ -117,7 +118,7 @@ gcommit() {
 bump() {
   getChange="$(changes)"
 
-  if [ $getChange == "true" ]; then
+  if [ $getChange = "true" ]; then
     npm version "$1" -m "Bumped to version %s"
   else
     gcommit "Before bump commit."
