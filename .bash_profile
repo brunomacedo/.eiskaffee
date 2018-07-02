@@ -53,7 +53,12 @@ update() {
   fi
 
   folders=($(ls -d */ | cut -f1 -d'/'))
+
+  # UNIX
   # for dirName in $folders; do
+  # $dirName
+
+  # WINDOWS
   for dirName in ${!folders[@]}; do
     echo ""
 
@@ -98,13 +103,14 @@ changes() {
 gcommit() {
 	getChange="$(changes)"
 
-  echo ""
-  echo "You have some modified files to commit."
-	echo "Would you like to commit it? [1] Yes [2] No"
-  echo ""
-	read SEND
-
   if [ $getChange = "false" ]; then
+
+    echo ""
+    echo "You have some modified files to commit."
+    echo "Would you like to commit it? [1] Yes [2] No"
+    echo ""
+    read SEND
+
 	  if [ $SEND = "1" ]; then
       isRemoteGit
 			git add .
