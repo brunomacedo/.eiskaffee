@@ -18,7 +18,6 @@ alias run='/c/www/run.sh 80 443'
 alias dev='gulp dev'
 alias prod='gulp prod'
 alias open='gulp open'
-alias stop='gulp kill'
 alias help='gulp help'
 
 fhelp() {
