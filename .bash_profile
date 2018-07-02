@@ -69,7 +69,7 @@ update() {
     cd ..
     echo "Closing"
     echo ""
-	done
+  done
 
   if [ $enterTemplates = "yes" ]; then
     www
@@ -100,7 +100,7 @@ changes() {
 }
 
 gcommit() {
-	getChange="$(changes)"
+  getChange="$(changes)"
 
   if [ $getChange = "false" ]; then
 
@@ -110,18 +110,18 @@ gcommit() {
     echo ""
     read SEND
 
-	  if [ $SEND = "1" ]; then
+    if [ $SEND = "1" ]; then
       isRemoteGit
-			git add .
+      git add .
       git commit -m "$1"
     else
       echo ""
       echo "Please, commit your modified files before bump version."
       git status -s
-		fi
+    fi
   else
     echo "Nothing to commit."
-	fi
+  fi
 }
 
 bump() {
