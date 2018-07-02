@@ -54,16 +54,16 @@ update() {
 
   folders=($(ls -d */ | cut -f1 -d'/'))
 
-  # UNIX
-  # for dirName in $folders; do
-  # $dirName
-
   # WINDOWS
-  for dirName in ${!folders[@]}; do
+  # for dirName in ${!folders[@]}; do
+  # ${folders[$dirName]}
+
+  # UNIX
+  for dirName in $folders; do
     echo ""
 
-    cd ${folders[$dirName]}
-    echo "Opening ${folders[$dirName]}"
+    cd $dirName
+    echo "Opening $dirName"
 
     isRemoteGit
 
