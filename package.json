@@ -1,6 +1,6 @@
 {
   "name": "bash-update-git",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Update all repositories from a folder using bash.",
   "main": ".bash_profile",
   "files": [
