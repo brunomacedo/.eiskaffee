@@ -128,9 +128,14 @@ gcommit() {
 bump() {
   getChange="$(changes)"
 
-  if [ $getChange = "true" ]; then
-    npm version "$1" -m "Bumped to version %s"
+  if [ "$1" ]; then
+    if [ $getChange = "true" ]; then
+      npm version "$1" -m "Bumped to version %s"
+      git push --tags
+    else
+      gcommit "Before bump commit."
+    fi
   else
-    gcommit "Before bump commit."
+    echo "Try to pass one argument: major | minor | patch"
   fi
 }
