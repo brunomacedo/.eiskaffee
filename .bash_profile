@@ -9,7 +9,7 @@ alias clone='git clone'
 alias cherry='git cherry -v'
 
 alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
-alias code='"/c/Program Files/Microsoft VS Code/Code.exe"'
+alias code=vscode
 alias www='cd /c/www'
 alias templates='cd /c/www/templates'
 alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
