@@ -1,6 +1,6 @@
 {
   "name": "bash-update-git",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Some function in bash_profile for developers.",
   "main": ".bash_profile",
   "files": [
