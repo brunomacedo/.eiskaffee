@@ -138,3 +138,15 @@ bump() {
     echo "Try to pass one argument: major | minor | patch"
   fi
 }
+
+# get your package.json version
+version() {
+  PACKAGE_VERSION=$(cat package.json \
+    | grep version \
+    | head -1 \
+    | awk -F: '{ print $2 }' \
+    | sed 's/[",]//g' \
+    | tr -d '[[:space:]]')
+
+  echo $PACKAGE_VERSION
+}
