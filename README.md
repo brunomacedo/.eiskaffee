@@ -27,18 +27,18 @@ echo ${folders[$dirName]}
 
 ## Different ways to get the package.json version
 
-```bash
+```shell
 node -p -e "require('./package.json').version"
 ```
 
-```bash
+```shell
 sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json
 ```
 
-```bash
+```shell
 grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'
 ```
 
-```bash
+```shell
 awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json
 ```
