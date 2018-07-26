@@ -1,6 +1,6 @@
 # My bash_profile commands
 
-Some function in `bash_profile` for developers.
+Some functions in `bash_profile` for developers.
 
 
 ## Where to put it on?
