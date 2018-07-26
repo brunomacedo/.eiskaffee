@@ -1,6 +1,7 @@
 # My bash_profile commands
 
-Update all repositories from a folder using bash.
+Some function in `bash_profile` for developers.
+
 
 ## Where to put it on?
 

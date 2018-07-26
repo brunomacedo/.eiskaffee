@@ -1,7 +1,7 @@
 {
   "name": "bash-update-git",
   "version": "3.2.0",
-  "description": "Update all repositories from a folder using bash.",
+  "description": "Some function in `bash_profile` for developers.",
   "main": ".bash_profile",
   "files": [
     ".bash_profile"
@@ -14,7 +14,10 @@
     "bash_profile",
     "bashrc",
     "profile",
-    "bash functions"
+    "shell",
+    "scripts",
+    "cmd",
+    "bash"
   ],
   "author": "Bruno Macedo",
   "license": "MIT",
