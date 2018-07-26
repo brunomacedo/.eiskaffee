@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/brunomacedo/bash-update-git.git"
   },
-  "keywords": [],
+  "keywords": [
+    "bash_profile",
+    "bashrc",
+    "profile",
+    "bash functions"
+  ],
   "author": "Bruno Macedo",
   "license": "MIT",
   "bugs": {
