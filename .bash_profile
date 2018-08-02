@@ -51,7 +51,7 @@ update() {
     enterTemplates="no"
   fi
 
-  OLDIFS=$IFS
+  OLDIFS=""
   IFS=$'\n'
 
   folders=($(ls -d */ | cut -f1 -d'/'))
@@ -158,7 +158,7 @@ version() {
 
 # RENAME FOLDERS AND FILES WITH SPECIAL CHARACTERS
 rename() {
-  OLDIFS=$IFS
+  OLDIFS=""
   IFS=$'\n'
   files=()
 
