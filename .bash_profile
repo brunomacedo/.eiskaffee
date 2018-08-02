@@ -144,7 +144,7 @@ bump() {
   fi
 }
 
-# get your package.json version
+# GET YOUR PACKAGE.JSON VERSION
 version() {
   PACKAGE_VERSION=$(cat package.json \
     | grep version \
@@ -154,4 +154,45 @@ version() {
     | tr -d '[[:space:]]')
 
   echo $PACKAGE_VERSION
+}
+
+# RENAME FOLDERS AND FILES WITH SPECIAL CHARACTERS
+rename() {
+  OLDIFS=$IFS
+  IFS=$'\n'
+  files=()
+
+  # all dirs folders files | rename
+  if [ "$1" = "files" ]; then
+    files=(`ls -F | grep -v '[/@=|]$'`)
+
+  elif [ "$1" = "dirs" ] || [ "$1" = "folders" ]; then
+    files=(`ls -d */ | cut -f1 -d'/'`)
+
+  elif [ "$1" = "all" ] || [ "$1" = "" ]; then
+    files=(`ls -G | grep -v '[/@=|]$'`)
+  fi
+
+  IFS=$OLDIFS
+  for (( i = 0; i < ${#files[@]}; i++ )); do
+    if [ ${files[$i]} != `replaceCharacters ${files[$i],,}` ]; then
+      echo "Files renamed: ${files[$i]} to " `replaceCharacters ${files[$i],,}`
+      mv "${files[$i]}" `replaceCharacters ${files[$i],,}`
+    fi
+  done
+}
+
+# MAP CHARACTERS
+replaceCharacters() {
+  echo "$1" | \
+    sed "s/[áàâãä@]/a/gi; \
+        s/[éèêë&]/e/gi; \
+        s/[íìîï]/i/gi; \
+        s/[óòôõö]/o/gi; \
+        s/[úùûü]/u/gi; \
+        s/[ç]/c/gi; \
+        s/\]//gi; \
+        s/\[//gi; \
+        s/[#~^,*´¨$]/ /gi; \
+        s/[[:space:]]\+/-/gi"
 }
