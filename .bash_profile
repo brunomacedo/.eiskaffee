@@ -51,7 +51,12 @@ update() {
     enterTemplates="no"
   fi
 
+  OLDIFS=$IFS
+  IFS=$'\n'
+
   folders=($(ls -d */ | cut -f1 -d'/'))
+
+  IFS=$OLDIFS
 
   # WINDOWS
   # for dirName in ${!folders[@]}; do
