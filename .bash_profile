@@ -170,13 +170,13 @@ rename() {
     files=(`ls -d */ | cut -f1 -d'/'`)
 
   elif [ "$1" = "all" ] || [ "$1" = "" ]; then
-    files=(`ls -G | grep -v '[/@=|]$'`)
+    files=(`ls -G | sed 's/[\/]//g'`)
   fi
 
   IFS=$OLDIFS
-  for (( i = 0; i < ${#files[@]}; i++ )); do
+  for (( i=0; i < ${#files[@]}; i++ )); do
     if [ ${files[$i]} != `replaceCharacters ${files[$i],,}` ]; then
-      echo "Files renamed: ${files[$i]} to " `replaceCharacters ${files[$i],,}`
+      echo "File $i:" `replaceCharacters ${files[$i],,}`
       mv "${files[$i]}" `replaceCharacters ${files[$i],,}`
     fi
   done
@@ -191,8 +191,10 @@ replaceCharacters() {
         s/[óòôõö]/o/gi; \
         s/[úùûü]/u/gi; \
         s/[ç]/c/gi; \
+        s/(//gi; \
+        s/)//gi; \
         s/\]//gi; \
         s/\[//gi; \
         s/[#~^,*´¨$]/ /gi; \
-        s/[[:space:]]\+/-/gi"
+        s/[[:space:]_]\+/-/gi"
 }
