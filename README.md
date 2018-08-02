@@ -42,3 +42,13 @@ grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'
 ```shell
 awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json
 ```
+
+
+## Reset array list
+
+```shell
+OLDIFS=$IFS
+IFS=$'\n'
+your_array=()
+IFS=$OLDIFS
+```
