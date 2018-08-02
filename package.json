@@ -1,7 +1,7 @@
 {
   "name": "bash-update-git",
   "version": "4.0.0",
-  "description": "Some function in bash_profile for developers.",
+  "description": "Some functions in bash_profile for developers.",
   "main": ".bash_profile",
   "files": [
     ".bash_profile"
@@ -13,6 +13,8 @@
   "keywords": [
     "bash_profile",
     "bashrc",
+    "characters",
+    "rename",
     "profile",
     "shell",
     "scripts",
