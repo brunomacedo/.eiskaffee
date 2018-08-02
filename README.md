@@ -47,7 +47,7 @@ awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json
 ## Reset array list
 
 ```shell
-OLDIFS=$IFS
+OLDIFS=""
 IFS=$'\n'
 your_array=()
 IFS=$OLDIFS
