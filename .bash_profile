@@ -184,17 +184,17 @@ rename() {
 
 # MAP CHARACTERS
 replaceCharacters() {
-  echo "$1" | \
-    sed "s/[áàâãä@]/a/gi; \
-        s/[éèêë&]/e/gi; \
-        s/[íìîï]/i/gi; \
-        s/[óòôõö]/o/gi; \
-        s/[úùûü]/u/gi; \
-        s/[ç]/c/gi; \
-        s/(//gi; \
-        s/)//gi; \
-        s/\]//gi; \
-        s/\[//gi; \
-        s/[#~^,*´¨$]/ /gi; \
-        s/[[:space:]_]\+/-/gi"
+  echo "$1" | tr '[:upper:]' '[:lower:]' | \
+    sed "s/[áàâãä@]/a/g; \
+        s/[éèêë&]/e/g; \
+        s/[íìîï]/i/g; \
+        s/[óòôõö]/o/g; \
+        s/[úùûü]/u/g; \
+        s/[ç]/c/g; \
+        s/(//g; \
+        s/)//g; \
+        s/\]//g; \
+        s/\[//g; \
+        s/[#~^,*´¨$]/ /g; \
+        s/[[:space:]_]\+/-/g"
 }
