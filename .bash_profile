@@ -195,6 +195,6 @@ replaceCharacters() {
         s/)//g; \
         s/\]//g; \
         s/\[//g; \
-        s/[#~^,*´¨$]/ /g" | \
-    tr "[:blank:]" "-"
+        s/[#~^,*´%¨$]/ /g" | \
+    tr -s '[:blank:]' '-'
 }
