@@ -10,10 +10,19 @@ Save the `.bash_profile` file in the root folder on your user.
 
 ## Loop `for`: difference between Mac and Windows
 
+- Windows
 
 ```bash
 for dirName in ${!folders[@]}; do
-echo ${folders[$dirName]}
+echo "${folders[$dirName]}"
+```
+
+- Mac
+
+```bash
+for fileName in $files; do
+  echo "${fileName}"
+done
 ```
 
 
