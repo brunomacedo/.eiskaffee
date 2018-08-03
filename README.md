@@ -15,6 +15,7 @@ Save the `.bash_profile` file in the root folder on your user.
 ```bash
 for dirName in ${!folders[@]}; do
 echo "${folders[$dirName]}"
+done
 ```
 
 - Mac
