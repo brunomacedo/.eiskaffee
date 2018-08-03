@@ -1,6 +1,6 @@
 # My bash_profile commands
 
-Some functions in `bash_profile` for developers.
+Some functions in `bash_profile` for developers `bash --version > 4.0`
 
 
 ## Where to put it on?
@@ -10,16 +10,8 @@ Save the `.bash_profile` file in the root folder on your user.
 
 ## Loop `for`: difference between Mac and Windows
 
-- Mac
 
-```shell
-for dirName in $folders; do
-echo $dirName
-```
-
-- Windows
-
-```shell
+```bash
 for dirName in ${!folders[@]}; do
 echo ${folders[$dirName]}
 ```
@@ -27,26 +19,26 @@ echo ${folders[$dirName]}
 
 ## Different ways to get the package.json version
 
-```shell
+```bash
 node -p -e "require('./package.json').version"
 ```
 
-```shell
+```bash
 sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json
 ```
 
-```shell
+```bash
 grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'
 ```
 
-```shell
+```bash
 awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json
 ```
 
 
 ## Reset array list
 
-```shell
+```bash
 OLDIFS=""
 IFS=$'\n'
 your_array=()
