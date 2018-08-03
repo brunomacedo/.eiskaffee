@@ -161,8 +161,8 @@ rename() {
   OLDIFS=""
   IFS=$'\n'
   files=()
+  ARGS=true
 
-  # all dirs folders files | rename
   if [ "$1" = "files" ]; then
     files=(`ls -F | grep -v '[/@=|]$'`)
 
@@ -171,24 +171,38 @@ rename() {
 
   elif [ "$1" = "all" ] || [ "$1" = "" ]; then
     files=(`ls -G | sed 's/[\/]//g'`)
+
+  else
+    ARGS=false
+    echo -e "\nUsage: rename <command>\n\nwhere <command> is one of:\n    all, dirs, folders, files"
+
   fi
 
   IFS=$OLDIFS
-  # WINDOWS
-  # for (( i=0; i < ${#files[@]}; i++ )); do
-  #   if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
-  #     echo "File $i:" `replaceCharacters ${files[$i]}`
-  #     mv "${files[$i]}" `replaceCharacters ${files[$i]}`
-  #   fi
-  # done
+  COUNTRENAME=0
+  if $ARGS; then
+    # WINDOWS
+    # for (( i=0; i < ${#files[@]}; i++ )); do
+    #   if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
+    #     echo "Renamed:" `replaceCharacters ${files[$i]}`
+    #     mv "${files[$i]}" `replaceCharacters ${files[$i]}`
+    #     COUNTRENAME=$((COUNTRENAME+1))
+    #   fi
+    # done
 
-  # MAC
-  for fileName in $files; do
-    if [ ${fileName} != `replaceCharacters ${fileName}` ]; then
-      echo "File:" `replaceCharacters "${fileName}"`
-      mv "${fileName}" `replaceCharacters "${fileName}"`
+    # MAC
+    for fileName in $files; do
+      if [ ${fileName} != `replaceCharacters ${fileName}` ]; then
+        echo "File:" `replaceCharacters "${fileName}"`
+        mv "${fileName}" `replaceCharacters "${fileName}"`
+        COUNTRENAME=$((COUNTRENAME+1))
+      fi
+    done
+
+    if (( $COUNTRENAME <= 0 )); then
+      echo "Everything is look good."
     fi
-  done
+  fi
 }
 
 # MAP CHARACTERS
