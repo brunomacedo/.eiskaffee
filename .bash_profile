@@ -62,7 +62,7 @@ update() {
   # for dirName in ${!folders[@]}; do
   # ${folders[$dirName]}
 
-  # UNIX
+  # MAC
   for dirName in $folders; do
     echo ""
 
@@ -174,10 +174,19 @@ rename() {
   fi
 
   IFS=$OLDIFS
-  for (( i=0; i < ${#files[@]}; i++ )); do
-    if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
-      echo "File $i:" `replaceCharacters ${files[$i]}`
-      mv "${files[$i]}" `replaceCharacters ${files[$i]}`
+  # WINDOWS
+  # for (( i=0; i < ${#files[@]}; i++ )); do
+  #   if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
+  #     echo "File $i:" `replaceCharacters ${files[$i]}`
+  #     mv "${files[$i]}" `replaceCharacters ${files[$i]}`
+  #   fi
+  # done
+
+  # MAC
+  for fileName in $files; do
+    if [ ${fileName} != `replaceCharacters ${fileName}` ]; then
+      echo "File:" `replaceCharacters "${fileName}"`
+      mv "${fileName}" `replaceCharacters "${fileName}"`
     fi
   done
 }
