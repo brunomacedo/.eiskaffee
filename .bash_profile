@@ -1,3 +1,6 @@
+# Import colors functions
+source ~/.colors
+
 alias s='git status -s'
 alias status='git status -s'
 alias add='git add .'
