@@ -182,10 +182,10 @@ rename() {
   COUNTRENAME=0
   if $ARGS; then
     # WINDOWS
-    # for (( i=0; i < ${#files[@]}; i++ )); do
-    #   if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
-    #     echo "Renamed:" `replaceCharacters ${files[$i]}`
-    #     mv "${files[$i]}" `replaceCharacters ${files[$i]}`
+    # for nameIndex in ${!files[@]}; do
+    #   if [ ${files[$nameIndex]} != `replaceCharacters ${files[$nameIndex]}` ]; then
+    #     echo "Renamed:" `replaceCharacters ${files[$nameIndex]}`
+    #     mv "${files[$nameIndex]}" `replaceCharacters ${files[$nameIndex]}`
     #     COUNTRENAME=$((COUNTRENAME+1))
     #   fi
     # done
