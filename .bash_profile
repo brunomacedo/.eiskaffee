@@ -175,9 +175,9 @@ rename() {
 
   IFS=$OLDIFS
   for (( i=0; i < ${#files[@]}; i++ )); do
-    if [ ${files[$i]} != `replaceCharacters ${files[$i],,}` ]; then
-      echo "File $i:" `replaceCharacters ${files[$i],,}`
-      mv "${files[$i]}" `replaceCharacters ${files[$i],,}`
+    if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
+      echo "File $i:" `replaceCharacters ${files[$i]}`
+      mv "${files[$i]}" `replaceCharacters ${files[$i]}`
     fi
   done
 }
