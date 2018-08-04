@@ -1,12 +1,23 @@
 # My bash profile commands
 
-Some functions in `bash_profile` for developers `bash --version > 4.0`
+Some functions in my `bash_profile` for developers `bash --version > 4.0`
 
 
-## Where to put it on?
+# Instructions
 
-Save the `.bash_profile` file in the root folder on your user.
+## Where to put it?
 
+**1.** Clone this **repository** in your root user folder.
+
+**2.** Create a file called `.bash_profile` in your root user folder.
+After that you should insert this line `source ~/.eiskrc` on it.
+
+**3.** Now copy `.eiskrc` file on this repository in your root user folder.
+
+**4.** Restart your terminal. =D
+
+
+# Anotations
 
 ## Loop `for`: difference between versions
 
