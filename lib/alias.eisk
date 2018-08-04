@@ -1,0 +1,17 @@
+#!/bin/sh
+
+alias s='git status -s'
+alias status='git status -s'
+alias add='git add .'
+alias commit='git commit -m'
+alias push='git push'
+alias pull='git pull'
+alias discart='git checkout -f'
+alias clone='git clone'
+alias cherry='git cherry -v'
+
+# alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
+# alias code=vscode
+# alias www='cd /c/www'
+# alias templates='cd /c/www/templates'
+# alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
