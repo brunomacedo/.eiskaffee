@@ -1,6 +1,6 @@
 {
   "name": "eiskaffee-bash",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "description": "Some custom functions in my bash profile.",
   "main": "eiskaffee.sh",
   "files": [
