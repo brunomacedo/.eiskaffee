@@ -42,18 +42,29 @@ update() {
   local folders=($(ls -d */ | cut -f1 -d'/'))
 
   IFS=$OLDIFS
-  for (( i = 1; i <= ${#folders}; ++i )); do
-    echo ""
+  if [ $(getSystemOS) = "Msys" ]; then
+    for (( i = 0; i < ${#folders[@]}; ++i )); do
+      cd ${folders[$i]}
+      echo -e "Opening ${blueb}${folders[$i]}${end}"
 
-    cd ${folders[i]}
-    echo -e "Opening ${blueb}${folders[i]}${end}"
+      isRemoteGitPull
 
-    isRemoteGitPull
+      cd ..
+      echo -e "Closing."
+      echo ""
+    done
+  else
+    for (( i = 1; i <= ${#folders[@]}; ++i )); do
+      cd ${folders[$i]}
+      echo -e "Opening ${blueb}${folders[$i]}${end}"
 
-    cd ..
-    echo -e "Closing."
-    echo ""
-	done
+      isRemoteGitPull
+
+      cd ..
+      echo -e "Closing."
+      echo ""
+    done
+  fi
 }
 
 # Git show logs
