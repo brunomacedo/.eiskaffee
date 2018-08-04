@@ -10,7 +10,7 @@ Save the `.bash_profile` file in the root folder on your user.
 
 ## Loop `for`: difference between versions
 
-- > bash 4.0
+- `> bash 4.0`
 
 ```bash
 for dirName in ${!folders[@]}; do
@@ -18,7 +18,7 @@ echo "${folders[$dirName]}"
 done
 ```
 
-- < bash 3.0
+- `< bash 3.0`
 
 ```bash
 for fileName in $files; do
