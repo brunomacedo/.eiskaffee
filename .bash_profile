@@ -107,6 +107,7 @@ changes() {
   echo "$changed"
 }
 
+# Git verify if there are something to versioned
 gcommit() {
   getChange="$(changes)"
 
@@ -132,22 +133,26 @@ gcommit() {
   fi
 }
 
+# Git update package version
+# Usage: bump <version>
+# where <version> is one of:
+#     major, minor, patch
 bump() {
-  getChange="$(changes)"
+  if [ "$1" != "" ] && [ "$1" ]; then
+    local getChange="$(changes)"
 
-  if [ "$1" ]; then
     if [ $getChange = "true" ]; then
       npm version "$1" -m "Bumped to version %s"
-      git push --tags
+      # git push --tags
     else
       gcommit "Before bump commit."
     fi
   else
-    echo "Try to pass one argument: major | minor | patch"
+    echo -e "\nUsage: bump ${yellowb}<version>${end}\n\nwhere <version> is one of:\n    ${purple}major, minor, patch${end}\n"
   fi
 }
 
-# GET YOUR PACKAGE.JSON VERSION
+# Get your package.json version
 version() {
   PACKAGE_VERSION=$(cat package.json \
     | grep version \
@@ -159,12 +164,16 @@ version() {
   echo $PACKAGE_VERSION
 }
 
-# RENAME FOLDERS AND FILES WITH SPECIAL CHARACTERS
+# Rename folders and files with special
+# Usage: rename <command>
+# where <command> is one of:
+#     all, dirs, folders, files
 rename() {
   OLDIFS=""
   IFS=$'\n'
-  files=()
-  ARGS=true
+  local files=()
+  local ARGS=true
+  local COUNTRENAME=0
 
   if [ "$1" = "files" ]; then
     files=(`ls -F | grep -v '[/@=|]$'`)
@@ -177,38 +186,30 @@ rename() {
 
   else
     ARGS=false
-    echo -e "\nUsage: rename <command>\n\nwhere <command> is one of:\n    all, dirs, folders, files"
+    echo -e "\nUsage: rename ${yellowb}<command>${end}\n\nwhere <command> is one of:\n    ${purple}all, dirs, folders, files${end}\n"
 
   fi
 
   IFS=$OLDIFS
-  COUNTRENAME=0
   if $ARGS; then
-    # WINDOWS
-    # for nameIndex in ${!files[@]}; do
-    #   if [ ${files[$nameIndex]} != `replaceCharacters ${files[$nameIndex]}` ]; then
-    #     echo "Renamed:" `replaceCharacters ${files[$nameIndex]}`
-    #     mv "${files[$nameIndex]}" `replaceCharacters ${files[$nameIndex]}`
-    #     COUNTRENAME=$((COUNTRENAME+1))
-    #   fi
-    # done
 
-    # MAC
-    for fileName in $files; do
-      if [ ${fileName} != `replaceCharacters ${fileName}` ]; then
-        echo "File:" `replaceCharacters "${fileName}"`
-        mv "${fileName}" `replaceCharacters "${fileName}"`
+    for (( i = 1; i <= ${#files}; ++i )); do
+      byte="$str[i]"
+
+      if [ ${files[i]} != `replaceCharacters ${files[i]}` ]; then
+        echo -e "${yellowb}Renamed:${end}" `replaceCharacters "${files[i]}"`
+        mv "${files[i]}" `replaceCharacters "${files[i]}"`
         COUNTRENAME=$((COUNTRENAME+1))
       fi
     done
 
     if (( $COUNTRENAME <= 0 )); then
-      echo "Everything is look good."
+      echo -e "${lightblueb}Everything is look good.${end}"
     fi
   fi
 }
 
-# MAP CHARACTERS
+# Map of characters
 replaceCharacters() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | \
     sed "s/[áàâãä@]/a/g; \

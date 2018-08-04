@@ -1,4 +1,4 @@
-# My bash_profile commands
+# My bash profile commands
 
 Some functions in `bash_profile` for developers `bash --version > 4.0`
 
@@ -8,9 +8,9 @@ Some functions in `bash_profile` for developers `bash --version > 4.0`
 Save the `.bash_profile` file in the root folder on your user.
 
 
-## Loop `for`: difference between Mac and Windows
+## Loop `for`: difference between versions
 
-- Windows
+- > bash 4.0
 
 ```bash
 for dirName in ${!folders[@]}; do
@@ -18,7 +18,7 @@ echo "${folders[$dirName]}"
 done
 ```
 
-- Mac
+- < bash 3.0
 
 ```bash
 for fileName in $files; do
