@@ -1,0 +1,14 @@
+#!/bin/sh
+
+getSystemOS() {
+  case "$OSTYPE" in
+    linux*)   echo "Linux" ;;
+    darwin*)  echo "Mac" ;;
+    win*)     echo "Windows" ;;
+    msys*)    echo "Msys" ;;
+    cygwin*)  echo "Cygwin" ;;
+    bsd*)     echo "Bsd" ;;
+    solaris*) echo "Solaris" ;;
+    *)        echo "unknown: $OSTYPE" ;;
+  esac
+}
