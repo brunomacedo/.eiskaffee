@@ -27,17 +27,25 @@ rename() {
   fi
 
   IFS=$OLDIFS
-  if $ARGS; then
+  if $ARGS = true; then
+    if [ $(getSystemOS) = "Msys" ]; then
+      for (( i = 0; i < ${#files[@]}; ++i )); do
+        if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
+          echo -e "${yellowb}Renamed:${end}" `replaceCharacters "${files[$i]}"`
+          mv "${files[$i]}" `replaceCharacters "${files[$i]}"`
+          COUNTRENAME=$((COUNTRENAME+1))
+        fi
+      done
+    else
+      for (( i = 1; i <= ${#files[@]}; ++i )); do
+        if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then
+          echo -e "${yellowb}Renamed:${end}" `replaceCharacters "${files[$i]}"`
+          mv "${files[$i]}" `replaceCharacters "${files[$i]}"`
+          COUNTRENAME=$((COUNTRENAME+1))
+        fi
+      done
+    fi
 
-    for (( i = 1; i <= ${#files}; ++i )); do
-      byte="$str[i]"
-
-      if [ ${files[i]} != `replaceCharacters ${files[i]}` ]; then
-        echo -e "${yellowb}Renamed:${end}" `replaceCharacters "${files[i]}"`
-        mv "${files[i]}" `replaceCharacters "${files[i]}"`
-        COUNTRENAME=$((COUNTRENAME+1))
-      fi
-    done
 
     if (( $COUNTRENAME <= 0 )); then
       echo -e "${lightblueb}Everything is look good.${end}"
