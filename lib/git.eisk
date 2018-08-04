@@ -1,0 +1,116 @@
+#!/bin/sh
+
+# Git get the current branch
+getCurrentBranch() {
+  local ref
+  ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return  # no git repo.
+    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
+  fi
+  echo ${ref#refs/heads/}
+}
+
+# Verify if local repository exists
+isGitRepo() {
+  local GET_REPO=true
+  if [[ ! -d ".git" ]]; then
+    echo "${redb}No such repository (.git).${end}"
+    GET_REPO=false
+    return false
+  fi
+
+  echo $GET_REPO
+}
+
+# Verify if there is a remote repository
+isRemoteGitPull() {
+  local CURRENT_BRANCH="$(getCurrentBranch)"
+  if [[ -n "$(command git show-ref origin/${CURRENT_BRANCH} 2> /dev/null)" ]]; then
+    pull
+  else
+    echo "${blueb}Remote does not exists.${end}"
+  fi
+}
+
+# Git update [pull] multiple repositories
+update() {
+  OLDIFS=""
+  IFS=$'\n'
+
+  local folders=($(ls -d */ | cut -f1 -d'/'))
+
+  IFS=$OLDIFS
+  for (( i = 1; i <= ${#folders}; ++i )); do
+    echo ""
+
+    cd ${folders[i]}
+    echo "Opening ${blueb}${folders[i]}${end}"
+
+    isRemoteGitPull
+
+    cd ..
+    echo "Closing."
+    echo ""
+	done
+}
+
+# Git show logs
+# Usage: logs <number> <user_name:optional>
+# where <number> is one of:
+#     1 ... ~
+logs() {
+  if [[ "$(isGitRepo)" = true ]]; then
+    if [ "$1" ] && [ "$2" ]; then
+      git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date-order -n "$1" --date=short --author="$2"
+    elif [ "$1" ]; then
+      git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date-order -n "$1" --date=short
+    else
+      git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date=short
+    fi
+
+    return
+  fi
+
+  isGitRepo
+}
+
+# Verify if there are files to versioned
+changes() {
+  local changed=false
+  if [[ -n "$(command git status --porcelain)" ]]; then
+    changed=true
+  fi
+  echo $changed
+}
+
+# Ask if you'd like to commit changes
+gcommit() {
+  if [[ "$(isGitRepo)" = true ]]; then
+    local getChange="$(changes)"
+
+    if [ $getChange = true ]; then
+      echo ""
+      echo "${lightblueb}You have some modified files to commit.${end}"
+      echo "Would you like to commit it? ${yellowb}[1]${end} Yes ${yellowb}[2]${end} No"
+      echo ""
+      read SEND
+
+      if [ $SEND = "1" ]; then
+        git add .
+        git commit -m "$1"
+      else
+        echo ""
+        echo "${redb}Your have files not versioned.${end}"
+        git status -s
+      fi
+    else
+      echo "Nothing to commit."
+    fi
+
+    return
+  fi
+
+  isGitRepo
+}
