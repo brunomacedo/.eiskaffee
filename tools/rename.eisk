@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# Rename folders and files with special
+# Usage: rename <command>
+# where <command> is one of:
+#     all, dirs, folders, files
+rename() {
+  OLDIFS=""
+  IFS=$'\n'
+  local files=()
+  local ARGS=true
+  local COUNTRENAME=0
+
+  if [ "$1" = "files" ]; then
+    files=(`ls -F | grep -v '[/@=|]$'`)
+
+  elif [ "$1" = "dirs" ] || [ "$1" = "folders" ]; then
+    files=(`ls -d */ | cut -f1 -d'/'`)
+
+  elif [ "$1" = "all" ] || [ "$1" = "" ]; then
+    files=(`ls -G | sed 's/[\/]//g'`)
+
+  else
+    ARGS=false
+    echo -e "\nUsage: rename ${yellowb}<command>${end}\n\nwhere <command> is one of:\n    ${purple}all, dirs, folders, files${end}\n"
+
+  fi
+
+  IFS=$OLDIFS
+  if $ARGS; then
+
+    for (( i = 1; i <= ${#files}; ++i )); do
+      byte="$str[i]"
+
+      if [ ${files[i]} != `replaceCharacters ${files[i]}` ]; then
+        echo -e "${yellowb}Renamed:${end}" `replaceCharacters "${files[i]}"`
+        mv "${files[i]}" `replaceCharacters "${files[i]}"`
+        COUNTRENAME=$((COUNTRENAME+1))
+      fi
+    done
+
+    if (( $COUNTRENAME <= 0 )); then
+      echo -e "${lightblueb}Everything is look good.${end}"
+    fi
+  fi
+}
+
+# Map of characters
+replaceCharacters() {
+  echo "$1" | tr '[:upper:]' '[:lower:]' | \
+    sed "s/[áàâãä@]/a/g; \
+        s/[éèêë&]/e/g; \
+        s/[íìîï]/i/g; \
+        s/[óòôõö]/o/g; \
+        s/[úùûü]/u/g; \
+        s/[ç]/c/g; \
+        s/(//g; \
+        s/)//g; \
+        s/\]//g; \
+        s/\[//g; \
+        s/[#~^,*´%¨$]/ /g" | \
+    tr -s '[:blank:]' '-'
+}
