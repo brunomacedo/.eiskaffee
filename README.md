@@ -24,7 +24,7 @@ After that you should insert this line `source ~/.eiskrc` on it.
 
 ```bash
 for dirName in ${!folders[@]}; do
-echo "${folders[$dirName]}"
+  echo "${folders[$dirName]}"
 done
 ```
 
