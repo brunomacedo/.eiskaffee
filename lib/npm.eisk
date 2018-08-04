@@ -28,5 +28,5 @@ version() {
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
 
-  echo "${greenb}v${PACKAGE_VERSION}${end}"
+  echo -e "${greenb}v${PACKAGE_VERSION}${end}"
 }
