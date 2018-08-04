@@ -11,81 +11,74 @@ alias discart='git checkout -f'
 alias clone='git clone'
 alias cherry='git cherry -v'
 
-alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
-alias code=vscode
-alias www='cd /c/www'
-alias templates='cd /c/www/templates'
-alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
+# alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
+# alias code=vscode
+# alias www='cd /c/www'
+# alias templates='cd /c/www/templates'
+# alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
 
-alias run='/c/www/run.sh 80 443'
-alias dev='gulp dev'
-alias prod='gulp prod'
-alias open='gulp open'
-alias help='gulp help'
+# Git get the current branch
+getCurrentBranch() {
+  local ref
+  ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return  # no git repo.
+    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
+  fi
+  echo ${ref#refs/heads/}
+}
 
-fhelp() {
-  if [ "$1" ]; then
-    help | grep "$1" --color=auto
+# Verify if local repository exists
+isGitRepo() {
+  local GET_REPO=true
+  if [[ ! -d ".git" ]]; then
+    echo "${redb}No such repository (.git).${end}"
+    GET_REPO=false
+    return false
+  fi
+
+  echo $GET_REPO
+}
+
+# Verify if there is a remote repository
+isRemoteGitPull() {
+  local CURRENT_BRANCH="$(getCurrentBranch)"
+  if [[ -n "$(command git show-ref origin/${CURRENT_BRANCH} 2> /dev/null)" ]]; then
+    pull
   else
-    echo "It needs one argument."
+    echo "${blueb}Remote does not exists.${end}"
   fi
 }
 
-isRemoteGit() {
-  if [ -d ".git" ]; then
-    cd ".git"
-    if [ -f "config" ] && grep -q remote "config"; then
-      cd ..
-      pull
-    else
-      echo "Remote does not exists"
-      cd ..
-    fi
-  else
-    echo "Repo does not exists"
-  fi
-}
-
+# Git update [pull] multiple repositories
 update() {
-  if [ -d "templates" ]; then
-    templates
-    enterTemplates="yes"
-  else
-    enterTemplates="no"
-  fi
-
   OLDIFS=""
   IFS=$'\n'
 
-  folders=($(ls -d */ | cut -f1 -d'/'))
+  local folders=($(ls -d */ | cut -f1 -d'/'))
 
   IFS=$OLDIFS
-
-  # WINDOWS
-  # for dirName in ${!folders[@]}; do
-  # ${folders[$dirName]}
-
-  # MAC
-  for dirName in $folders; do
+  for (( i = 1; i <= ${#folders}; ++i )); do
     echo ""
 
-    cd $dirName
-    echo "Opening $dirName"
+    cd ${folders[i]}
+    echo "Opening ${blueb}${folders[i]}${end}"
 
-    isRemoteGit
+    isRemoteGitPull
 
     cd ..
-    echo "Closing"
+    echo "Closing."
     echo ""
-  done
-
-  if [ $enterTemplates = "yes" ]; then
-    www
-  fi
+	done
 }
 
+# Git show logs
+# Usage: logs <number> <user_name:optional>
+# where <number> is one of:
+#     1 ... ~
 logs() {
-  if [ -d ".git" ]; then
+  if [[ "$(isGitRepo)" = true ]]; then
     if [ "$1" ] && [ "$2" ]; then
       git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date-order -n "$1" --date=short --author="$2"
     elif [ "$1" ]; then
@@ -93,44 +86,50 @@ logs() {
     else
       git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date=short
     fi
-  else
-    echo "No such repository."
+
+    return
   fi
+
+  isGitRepo
 }
 
+# Verify if there are files to versioned
 changes() {
-  if [ -z "$(git status --porcelain)" ]; then
+  local changed=false
+  if [[ -n "$(command git status --porcelain)" ]]; then
     changed=true
-  else
-    changed=false
   fi
-  echo "$changed"
+  echo $changed
 }
 
-# Git verify if there are something to versioned
+# Ask if you'd like to commit changes
 gcommit() {
-  getChange="$(changes)"
+  if [[ "$(isGitRepo)" = true ]]; then
+    local getChange="$(changes)"
 
-  if [ $getChange = "false" ]; then
-
-    echo ""
-    echo "You have some modified files to commit."
-    echo "Would you like to commit it? [1] Yes [2] No"
-    echo ""
-    read SEND
-
-    if [ $SEND = "1" ]; then
-      isRemoteGit
-      git add .
-      git commit -m "$1"
-    else
+    if [ $getChange = true ]; then
       echo ""
-      echo "Please, commit your modified files before bump version."
-      git status -s
+      echo "${lightblueb}You have some modified files to commit.${end}"
+      echo "Would you like to commit it? ${yellowb}[1]${end} Yes ${yellowb}[2]${end} No"
+      echo ""
+      read SEND
+
+      if [ $SEND = "1" ]; then
+        git add .
+        git commit -m "$1"
+      else
+        echo ""
+        echo "${redb}Your have files not versioned.${end}"
+        git status -s
+      fi
+    else
+      echo "Nothing to commit."
     fi
-  else
-    echo "Nothing to commit."
+
+    return
   fi
+
+  isGitRepo
 }
 
 # Git update package version
@@ -141,7 +140,7 @@ bump() {
   if [ "$1" != "" ] && [ "$1" ]; then
     local getChange="$(changes)"
 
-    if [ $getChange = "true" ]; then
+    if [ $getChange = false ]; then
       npm version "$1" -m "Bumped to version %s"
       # git push --tags
     else
@@ -154,14 +153,14 @@ bump() {
 
 # Get your package.json version
 version() {
-  PACKAGE_VERSION=$(cat package.json \
+  local PACKAGE_VERSION=$(cat package.json \
     | grep version \
     | head -1 \
     | awk -F: '{ print $2 }' \
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
 
-  echo $PACKAGE_VERSION
+  echo "${greenb}v${PACKAGE_VERSION}${end}"
 }
 
 # Rename folders and files with special
