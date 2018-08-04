@@ -2,7 +2,6 @@
 
 Some functions in my `bash_profile` for developers `bash --version > 4.0`
 
-
 # Instructions
 
 ## Where to put it?
