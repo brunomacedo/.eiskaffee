@@ -1,4 +1,22 @@
 #!/bin/sh
 
+#-----------------------------------------------
+#
+#   Author: Bruno Macedo
+#   Description: File used to hold Bash configuration, aliases, functions, etc...
+#   Repository: https://github.com/brunomacedo/.eiskaffee.git
+#
+#   Tools:
+#   1. rename
+#   2. system
+#
+#   Modules:
+#   1. alias
+#   2. colors
+#   3. git
+#   4. npm
+#
+#-----------------------------------------------
+
 export FINDROOT=~/.eiskaffee
 source $FINDROOT/eiskaffee.sh
