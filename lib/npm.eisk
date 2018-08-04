@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Update package version
+# Usage: bump <version>
+# where <version> is one of:
+#     major, minor, patch
+bump() {
+  if [ "$1" != "" ] && [ "$1" ]; then
+    local getChange="$(changes)"
+
+    if [ $getChange = false ]; then
+      npm version "$1" -m "Bumped to version %s"
+      # git push --tags
+    else
+      gcommit "Before bump commit."
+    fi
+  else
+    echo -e "\nUsage: bump ${yellowb}<version>${end}\n\nwhere <version> is one of:\n    ${purple}major, minor, patch${end}\n"
+  fi
+}
+
+# Get your package.json version
+version() {
+  local PACKAGE_VERSION=$(cat package.json \
+    | grep version \
+    | head -1 \
+    | awk -F: '{ print $2 }' \
+    | sed 's/[",]//g' \
+    | tr -d '[[:space:]]')
+
+  echo "${greenb}v${PACKAGE_VERSION}${end}"
+}
