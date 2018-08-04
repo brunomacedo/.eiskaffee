@@ -24,6 +24,8 @@ After that you should insert this line `source ~/.eiskrc` on it.
 
 ```bash
 for dirName in ${!folders[@]}; do
+# for (( i = 0; i < ${#folders[@]}; ++i )); do
+  # echo "${folders[$i]}"
   echo "${folders[$dirName]}"
 done
 ```
@@ -31,8 +33,10 @@ done
 - `Darwin/Mac`
 
 ```bash
-for fileName in $files; do
-  echo "${fileName}"
+for dirName in $folders; do
+# for (( i = 1; i <= ${#folders[@]}; ++i )); do
+  # echo "${folders[$i]}"
+  echo "$dirName"
 done
 ```
 
