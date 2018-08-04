@@ -1,5 +1,5 @@
 # Import colors functions
-source ~/.colors
+source ${FINDROOT}/.colors
 
 alias s='git status -s'
 alias status='git status -s'
