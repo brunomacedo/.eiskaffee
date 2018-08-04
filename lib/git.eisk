@@ -16,7 +16,7 @@ getCurrentBranch() {
 isGitRepo() {
   local GET_REPO=true
   if [[ ! -d ".git" ]]; then
-    echo "${redb}No such repository (.git).${end}"
+    echo -e "${redb}No such repository (.git).${end}"
     GET_REPO=false
     return false
   fi
@@ -30,7 +30,7 @@ isRemoteGitPull() {
   if [[ -n "$(command git show-ref origin/${CURRENT_BRANCH} 2> /dev/null)" ]]; then
     pull
   else
-    echo "${blueb}Remote does not exists.${end}"
+    echo -e "${blueb}Remote does not exists.${end}"
   fi
 }
 
@@ -46,12 +46,12 @@ update() {
     echo ""
 
     cd ${folders[i]}
-    echo "Opening ${blueb}${folders[i]}${end}"
+    echo -e "Opening ${blueb}${folders[i]}${end}"
 
     isRemoteGitPull
 
     cd ..
-    echo "Closing."
+    echo -e "Closing."
     echo ""
 	done
 }
@@ -92,8 +92,8 @@ gcommit() {
 
     if [ $getChange = true ]; then
       echo ""
-      echo "${lightblueb}You have some modified files to commit.${end}"
-      echo "Would you like to commit it? ${yellowb}[1]${end} Yes ${yellowb}[2]${end} No"
+      echo -e "${lightblueb}You have some modified files to commit.${end}"
+      echo -e "Would you like to commit it? ${yellowb}[1]${end} Yes ${yellowb}[2]${end} No"
       echo ""
       read SEND
 
@@ -102,11 +102,11 @@ gcommit() {
         git commit -m "$1"
       else
         echo ""
-        echo "${redb}Your have files not versioned.${end}"
+        echo -e "${redb}Your have files not versioned.${end}"
         git status -s
       fi
     else
-      echo "Nothing to commit."
+      echo -e "${redb}Nothing to commit.${end}"
     fi
 
     return
