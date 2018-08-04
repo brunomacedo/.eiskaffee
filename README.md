@@ -18,9 +18,9 @@ After that you should insert this line `source ~/.eiskrc` on it.
 
 # Anotations
 
-## Loop `for`: difference between versions
+## Loop `for`: difference
 
-- `> bash 4.0`
+- `Msys`
 
 ```bash
 for dirName in ${!folders[@]}; do
@@ -28,7 +28,7 @@ echo "${folders[$dirName]}"
 done
 ```
 
-- `< bash 3.0`
+- `Darwin/Mac`
 
 ```bash
 for fileName in $files; do
