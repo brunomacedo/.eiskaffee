@@ -2,9 +2,10 @@
 
 Some functions in my `bash_profile` for developers `bash --version > 4.0`
 
+
 # Instructions
 
-## Where to put it?
+## Where to put it (manually)?
 
 **1.** Clone this **repository** in your root user folder.
 
@@ -15,10 +16,25 @@ After that you should insert this line `source ~/.eiskrc` on it.
 
 **4.** Restart your terminal. =D
 
-**5.** You can run it automatically. Just run the `./tools/install.sh` file in your terminal.
+
+## Try install semi-automatically
+
+
+**1.** Clone this **repository** in your root user folder.
+
+**2.** Just run `install.sh` file in your terminal.
 
 ```bash
 ~/.eiskaffee/tools/install.sh
+```
+
+**3.** Restart your terminal. =D
+
+
+## Install automatically
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
 ```
 
 
