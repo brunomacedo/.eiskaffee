@@ -11,9 +11,15 @@ Some functions in my `bash_profile` for developers `bash --version > 4.0`
 **2.** Create a file called `.bash_profile` in your root user folder.
 After that you should insert this line `source ~/.eiskrc` on it.
 
-**3.** Now copy `.eiskrc` file on this repository in your root user folder.
+**3.** Now copy `.eiskrc` file on this repository into `tools/.eiskrc` in your root user folder.
 
 **4.** Restart your terminal. =D
+
+**5** You can run it automatically. Just run the `./tools/install.sh` file in your terminal.
+
+```bash
+~/.eiskaffee/tools/install.sh
+```
 
 
 # Anotations
