@@ -15,7 +15,7 @@ After that you should insert this line `source ~/.eiskrc` on it.
 
 **4.** Restart your terminal. =D
 
-**5** You can run it automatically. Just run the `./tools/install.sh` file in your terminal.
+**5.** You can run it automatically. Just run the `./tools/install.sh` file in your terminal.
 
 ```bash
 ~/.eiskaffee/tools/install.sh
