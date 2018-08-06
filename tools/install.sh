@@ -15,7 +15,7 @@ if [ ! -n "$FINDROOT" ]; then
 fi
 
 
-if [ ! -d ~/.eiskaffee ]; then
+if [ ! -d $FINDROOT ]; then
   env git clone --depth=1 "$REPOSITORY" "$FINDROOT" || {
     printf "Error: git clone of oh-my-zsh repo failed\n"
     exit 1
@@ -24,8 +24,8 @@ fi
 
 
 if [ ! -f ~/.eiskrc ]; then
-  if [ -f ~/.eiskaffee/tools/.eiskrc ]; then
-    cp ~/.eiskaffee/tools/.eiskrc ~/.eiskrc
+  if [ -f $FINDROOT/templates/.eiskrc ]; then
+    cp $FINDROOT/templates/.eiskrc ~/.eiskrc
   else
     printf "${red}"
     echo "No such file or directory."
