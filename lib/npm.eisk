@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Update package version
 # Usage: bump <version>

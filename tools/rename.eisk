@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Rename folders and files with special
 # Usage: rename <command>
@@ -27,7 +27,7 @@ rename() {
   fi
 
   IFS=$OLDIFS
-  if $ARGS = true; then
+  if ${ARGS} = true; then
     if [ $(getSystemOS) = "Msys" ]; then
       for (( i = 0; i < ${#files[@]}; ++i )); do
         if [ ${files[$i]} != `replaceCharacters ${files[$i]}` ]; then

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set colors to variables
 end="\033[0m"
