@@ -67,6 +67,14 @@ update() {
   fi
 }
 
+# Update [pull] any repositories
+upis() {
+  local CURRENT_DIR="$PWD"
+  cd "$1"
+  update
+  cd $CURRENT_DIR
+}
+
 # Git show logs
 # Usage: logs <number> <user_name:optional>
 # where <number> is one of:
