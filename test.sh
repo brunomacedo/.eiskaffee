@@ -1,9 +1,8 @@
 #!/bin/bash
-
 source ./eiskaffee.sh
 
 test_rplc() {
-  result=$(replace_characters "Açãí fruit")
+  result=$(replace_characters "Açãí  Fruit")
   assert_equals "$result" "acai-fruit"
 }
 
@@ -20,8 +19,8 @@ assert_equals() {
   printf ' %s\e[m | %s\n' "$status" "${FUNCNAME[1]/test_} $err"
 }
 
+# Generate the list of tests to run.
 main() {
-    # Generate the list of tests to run.
     IFS=$'\n'
     funcs=($(declare -F))
     for func in "${funcs[@]//declare -f }"; do
