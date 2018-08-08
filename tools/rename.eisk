@@ -54,8 +54,8 @@ rename() {
 }
 
 # Map of characters
+# Usage: replace_characters "Açãí fruit"
 replace_characters() {
-  # Usage: replace_characters "Açãí fruit"
   echo "$1" | tr '[:upper:]' '[:lower:]' | \
     sed "s/[áàâãä@]/a/g; \
         s/[éèêë&]/e/g; \
@@ -71,8 +71,9 @@ replace_characters() {
     tr -s '[:blank:]' '-'
 }
 
+# Trim spaces of string
+# Usage: trim_string "   example   string    "
 trim_string() {
-  # Usage: trim_string "   example   string    "
   : "${1#"${1%%[![:space:]]*}"}"
   : "${_%"${_##*[![:space:]]}"}"
   printf '%s\n' "$_"
