@@ -4,9 +4,5 @@ os:
   - osx
   # - linux
 
-on:
-  branch: master
-
 script:
-  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
   - sh ./test.sh

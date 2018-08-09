@@ -21,6 +21,10 @@ assert_equals() {
 
 # Generate the list of tests to run.
 main() {
+
+    head="-> Running tests on the Eiskaffee..."
+    printf '\n%s\n%s\n' "$head" "${head//?/-}"
+
     IFS=$'\n'
     funcs=($(declare -F))
     for func in "${funcs[@]//declare -f }"; do
