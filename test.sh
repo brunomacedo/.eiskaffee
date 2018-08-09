@@ -1,7 +1,7 @@
 #!/bin/bash
 source ./eiskaffee.sh
 
-test_rplc() {
+test_replace_characters() {
   result=$(replace_characters "Açãí  Fruit")
   assert_equals "$result" "acai-fruit"
 }
@@ -27,7 +27,7 @@ main() {
       [[ "$func" == test_* ]] && "$func";
     done
 
-    comp="Completed $((fail+pass)) tests. ${pass:-0} passed, ${fail:-0} failed."
+    comp="Completed $((fail+pass)) tests. ${greenb}${pass:-0} passed${end}, ${redb}${fail:-0} failed.${end}"
     printf '%s\n%s\n\n' "${comp//?/-}" "$comp"
 
     # If a test failed, exit with '1'.
