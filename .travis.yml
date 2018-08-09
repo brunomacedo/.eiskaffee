@@ -7,5 +7,11 @@ os:
 on:
   branch: master
 
+before_install:
+  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
+
 script:
  - sh ./test.sh
+
+after_success:
+  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/uninstall.sh)"
