@@ -1,10 +1,11 @@
 language: bash
 
 os:
-  - linux
+  - osx
+  # - linux
 
 on:
   branch: master
 
 script:
-  - sh ./test.sh
+ - sh ./test.sh
