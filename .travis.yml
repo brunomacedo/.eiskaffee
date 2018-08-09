@@ -3,5 +3,8 @@ language: bash
 os:
   - linux
 
+on:
+  branch: master
+
 script:
-  - ./test.sh
+  - sh ./test.sh
