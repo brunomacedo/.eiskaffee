@@ -2,13 +2,13 @@
 
 alias s='git status -s'
 alias status='git status -s'
-alias add='git add .'
 alias commit='git commit -m'
 alias push='git push'
 alias pull='git pull'
 alias discart='git checkout -f'
 alias clone='git clone'
 alias cherry='git cherry -v'
+alias add="git add"
 
 if [ $(getSystemOS) = "Msys" ]; then
   alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
