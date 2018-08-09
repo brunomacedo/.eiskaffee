@@ -8,10 +8,10 @@ if [ "$confirmation" != y ] && [ "$confirmation" != Y ]; then
   exit
 fi
 
-# if [ -d ~/.eiskaffee ]; then
-#   echo -e "${red}Removing ~/.eiskaffee${end}"
-#   rm -rf ~/.eiskaffee
-# fi
+if [ -d ~/.eiskaffee ]; then
+  echo -e "${red}Removing ~/.eiskaffee${end}"
+  rm -rf ~/.eiskaffee
+fi
 
 if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
   rm ~/.eiskrc
