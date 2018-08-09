@@ -1,5 +1,11 @@
 #!/bin/bash
-source ./eiskaffee.sh
+
+source ./tools/system.eisk
+source ./lib/colors.eisk
+source ./lib/alias.eisk
+source ./lib/git.eisk
+source ./lib/npm.eisk
+source ./tools/rename.eisk
 
 test_replace_characters() {
   result=$(replace_characters "Açãí  Fruit")
