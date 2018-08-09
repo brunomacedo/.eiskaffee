@@ -11,6 +11,12 @@ Some functions in my `bash_profile` for developers `bash --version > 4.0`
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
 ```
 
+```bash
+source ~/.bash_profile
+```
+
+OR
+
 Restart your terminal. =D
 
 
@@ -24,6 +30,21 @@ After that you should insert this line `source ~/.eiskrc` on it.
 **3.** Now copy `.eiskrc` file on this repository into `tools/.eiskrc` in your root user folder.
 
 **4.** Restart your terminal. =D
+
+
+## Uninstall
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/uninstall.sh)"
+```
+
+```bash
+source ~/.bash_profile
+```
+
+OR
+
+Restart your terminal. =D
 
 
 # Anotations
