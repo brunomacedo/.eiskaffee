@@ -1,5 +1,5 @@
 #!/bin/bash
-source eiskaffee.sh
+source ./eiskaffee.sh
 
 test_replace_characters() {
   result=$(replace_characters "Açãí  Fruit")
