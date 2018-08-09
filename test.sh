@@ -1,10 +1,10 @@
 #!/bin/bash
 
-source ./tools/system.eisk
+# source ./tools/system.eisk
+# source ./lib/alias.eisk
+# source ./lib/npm.eisk
+# source ./lib/git.eisk
 source ./lib/colors.eisk
-source ./lib/alias.eisk
-source ./lib/git.eisk
-source ./lib/npm.eisk
 source ./tools/rename.eisk
 
 test_replace_characters() {
