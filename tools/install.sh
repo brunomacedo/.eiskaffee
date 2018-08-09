@@ -1,6 +1,6 @@
-end="\033[0m"
-red="\033[0;31m"
-green="\033[0;32m"
+end=$'\033[0m'
+red=$'\033[0;31m'
+green=$'\033[0;32m'
 
 REPOSITORY="https://github.com/brunomacedo/.eiskaffee.git"
 
@@ -9,11 +9,9 @@ command -v git >/dev/null 2>&1 || {
   exit 1
 }
 
-
 if [ ! -n "$FINDROOT" ]; then
   FINDROOT=~/.eiskaffee
 fi
-
 
 if [ ! -d $FINDROOT ]; then
   env git clone --depth=1 "$REPOSITORY" "$FINDROOT" || {
@@ -21,7 +19,6 @@ if [ ! -d $FINDROOT ]; then
     exit 1
   }
 fi
-
 
 if [ ! -f ~/.eiskrc ]; then
   if [ -f $FINDROOT/templates/.eiskrc ]; then
@@ -34,11 +31,9 @@ if [ ! -f ~/.eiskrc ]; then
   fi
 fi
 
-
 if [ ! -f ~/.bash_profile  ]; then
   touch ~/.bash_profile
 fi
-
 
 if ! grep -Fxq "source ~/.eiskrc" ~/.bash_profile  > /dev/null; then
   echo "source ~/.eiskrc" >> ~/.bash_profile
@@ -48,7 +43,6 @@ else
   printf "${end}"
   exit 1
 fi
-
 
 printf "${green}"
 echo ""
