@@ -2,6 +2,8 @@
 
 Some functions in my `bash_profile` for developers `bash --version > 4.0`
 
+[![Build Status](https://travis-ci.org/brunomacedo/.eiskaffee.svg?branch=master)](https://travis-ci.org/brunomacedo/.eiskaffee)
+
 
 # Instructions
 
