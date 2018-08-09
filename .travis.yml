@@ -10,5 +10,3 @@ on:
 script:
   - sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
   - sh ./test.sh
-  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/uninstall.sh)"
-  - echo y
