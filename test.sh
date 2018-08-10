@@ -12,6 +12,11 @@ test_replace_characters() {
   assert_equals "$result" "acai-fruit"
 }
 
+test_trim_string() {
+  result=$(trim_string "   example string    ")
+  assert_equals "$result" "example string"
+}
+
 assert_equals() {
   if [[ "$1" == "$2" ]]; then
       ((pass+=1))
@@ -28,13 +33,13 @@ assert_equals() {
 # Generate the list of tests to run.
 main() {
 
-    head="-> Running tests on the Eiskaffee..."
+    head="-> Running tests on the ${blueb}Eiskaffee...${end}"
     printf '\n%s\n%s\n' "$head" "${head//?/-}"
 
     IFS=$'\n'
     funcs=($(declare -F))
-    for func in "${funcs[@]//declare -f }"; do
-      [[ "$func" == test_* ]] && "$func";
+    for func in $(declare -F); do
+      [[ "${func:11}" == test_* ]] && "${func:11}";
     done
 
     comp="Completed $((fail+pass)) tests. ${greenb}${pass:-0} passed${end}, ${redb}${fail:-0} failed.${end}"
