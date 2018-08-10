@@ -19,12 +19,12 @@ test_trim_string() {
 
 assert_equals() {
   if [[ "$1" == "$2" ]]; then
-      ((pass+=1))
-      status=$'\e[32m✔'
+    ((pass+=1))
+    status=$'\e[32m✔'
   else
-      ((fail+=1))
-      status=$'\e[31m✖'
-      local err="(\"$1\" != \"$2\")"
+    ((fail+=1))
+    status=$'\e[31m✖'
+    local err="(\"$1\" != \"$2\")"
   fi
 
   printf ' %s\e[m | %s\n' "$status" "${FUNCNAME[1]/test_} $err"
