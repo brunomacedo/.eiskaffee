@@ -37,7 +37,6 @@ main() {
     printf '\n%s\n%s\n' "$head" "${head//?/-}"
 
     IFS=$'\n'
-    funcs=($(declare -F))
     for func in $(declare -F); do
       [[ "${func:11}" == test_* ]] && "${func:11}";
     done
