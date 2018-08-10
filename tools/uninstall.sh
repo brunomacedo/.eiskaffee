@@ -19,7 +19,7 @@ if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
 fi
 
 if grep -Fxq "source ~/.eiskrc" ~/.bash_profile  > /dev/null; then
-  sed -i "/source ~\/.eiskrc/Id" ~/.bash_profile
+  sed -i "" "/source ~\/.eiskrc/d" ~/.bash_profile
   echo "Removing line ${red}~/.eiskrc${end} from ~/.bashprofile"
 fi
 
