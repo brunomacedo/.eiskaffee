@@ -19,7 +19,13 @@ if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
 fi
 
 if grep -Fxq "source ~/.eiskrc" ~/.bash_profile  > /dev/null; then
-  sed -i "" "/source ~\/.eiskrc/d" ~/.bash_profile
+
+  if [ "$OSTYPE" = "msys" ]; then
+    sed -i "/source ~\/.eiskrc/d" ~/.bash_profile
+  else
+    sed -i "" "/source ~\/.eiskrc/d" ~/.bash_profile
+  fi
+
   echo "Removing line ${red}~/.eiskrc${end} from ~/.bashprofile"
 fi
 
