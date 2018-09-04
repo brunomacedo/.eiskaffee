@@ -78,3 +78,16 @@ trim_string() {
   : "${_%"${_##*[![:space:]]}"}"
   printf '%s\n' "$_"
 }
+
+# Download multiple files Maven Lib
+download() {
+  OLDIFS=""
+  IFS=$'\n'
+
+  downloads=($(curl $1 | sed -n 's/.*href="\([^"]*\).*/\1/p'))
+
+  for (( i = 0; i < ${#downloads[@]}; ++i )); do
+    wget -m -q $(trim_string $1${downloads[$i]})
+    echo -e "Downloading... ${yellowb}$1${downloads[$i]}${end}"
+  done
+}
