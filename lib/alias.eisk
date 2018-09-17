@@ -11,7 +11,7 @@ alias cherry='git cherry -v'
 alias add="git add"
 
 if [ $(getSystemOS) = "Msys" ]; then
-  alias vscode='"/c/Program Files/Microsoft VS Code/Code.exe"'
+  alias vscode='"$HOME/AppData/Local/Programs/Microsoft VS Code/Code.exe"'
   alias code=vscode
   alias www='cd /c/www'
   alias templates='cd /c/www/templates'
