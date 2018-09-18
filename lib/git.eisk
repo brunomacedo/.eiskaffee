@@ -56,7 +56,7 @@ update() {
   else
     for (( i = 1; i <= ${#folders[@]}; ++i )); do
       cd ${folders[$i]}
-      echo -e "Opening ${blueb}${folders[$i]}${end}"
+      echo -e "Opening ${blueb}${folders[$i]}${end}."
 
       isRemoteGitPull
 
