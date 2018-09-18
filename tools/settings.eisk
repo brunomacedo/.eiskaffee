@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function eisk {
+  local CURRENT_DIR="$PWD"
+  if [ "$1" = "update" ]; then
+    if [ -d $FINDROOT ]; then
+      cd $FINDROOT
+      if [[ "$(isGitRepo)" = true ]]; then
+        printf "\n${greenb}Updating eiskaffee...${end}\n"
+        git pull
+        cd $CURRENT_DIR
+      fi
+    fi
+  fi
+}
