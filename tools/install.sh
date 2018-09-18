@@ -15,7 +15,7 @@ fi
 
 if [ ! -d $FINDROOT ]; then
   env git clone --depth=1 "$REPOSITORY" "$FINDROOT" || {
-    printf "Error: git clone of oh-my-zsh repo failed\n"
+    printf "Error: git clone of eiskaffee repo failed\n"
     exit 1
   }
 fi
