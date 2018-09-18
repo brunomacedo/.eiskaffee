@@ -21,6 +21,12 @@ OR
 
 Restart your terminal. =D
 
+## Update
+
+```bash
+eisk update
+```
+
 
 ## Where to put it (manually)?
 
