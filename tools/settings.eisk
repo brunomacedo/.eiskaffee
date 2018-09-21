@@ -2,17 +2,21 @@
 
 function eisk {
   local CURRENT_DIR="$PWD"
+
+  if [ -d $FINDROOT ]; then
+    printf "\n${redb}Eiskaffee not found.${end}\n"
+    exit 1
+  fi
+
   if [ "$1" = "update" ]; then
-    if [ -d $FINDROOT ]; then
-      cd $FINDROOT
-      if [[ "$(isGitRepo)" = true ]]; then
-        printf "\n${greenb}Updating eiskaffee...${end}\n"
-        git pull
-        cd $CURRENT_DIR
-      fi
+    cd $FINDROOT
+    if [[ "$(isGitRepo)" = true ]]; then
+      printf "\n${greenb}Updating eiskaffee...${end}\n"
+      git pull
+      cd $CURRENT_DIR
     fi
   elif [ "$1" = "uninstall" ] || [ "$1" = "remove" ]; then
-    sh uninstall.sh
+    sh $FINDROOT/tools/uninstall.sh
   else
     printf "\nUsage: eisk ${yellowb}<argument>${end}\n\nwhere <argument> is one of:\n    ${purple}update, uninstall, remove${end}\n"
   fi
