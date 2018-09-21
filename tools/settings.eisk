@@ -11,5 +11,9 @@ function eisk {
         cd $CURRENT_DIR
       fi
     fi
+  elif [ "$1" = "uninstall" ] || [ "$1" = "remove" ]; then
+    sh uninstall.sh
+  else
+    printf "\nUsage: eisk ${yellowb}<argument>${end}\n\nwhere <argument> is one of:\n    ${purple}update, uninstall, remove${end}\n"
   fi
 }
