@@ -3,8 +3,8 @@
 function eisk {
   local CURRENT_DIR="$PWD"
 
-  if [ -d $FINDROOT ]; then
-    printf "\n${redb}Eiskaffee not found.${end}\n"
+  if [ ! -d $FINDROOT ]; then
+    printf "${redb}Error:${end} Eiskaffee not found."
     exit 1
   fi
 
