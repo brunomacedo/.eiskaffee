@@ -15,7 +15,12 @@ bump() {
       gcommit "Before bump commit."
     fi
   else
-    echo -e "\nUsage: bump ${yellowb}<version>${end}\n\nwhere <version> is one of:\n    ${purple}major, minor, patch${end}\n"
+    echo ""
+    printf "Usage: bump ${yellowb}<version>${end}"
+    echo ""
+    echo "where <version> is one of:"
+    printf "\n    ${purple}major, minor, patch${end}"
+    echo ""
   fi
 }
 
