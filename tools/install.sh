@@ -31,18 +31,23 @@ if [ ! -f ~/.eiskrc ]; then
   fi
 fi
 
-if [ ! -f ~/.bash_profile  ]; then
-  touch ~/.bash_profile
-fi
+function sourceFileInstall {
+  if [ ! -f ~/$1 ]; then
+    touch ~/$1
+  fi
 
-if ! grep -Fxq "source ~/.eiskrc" ~/.bash_profile  > /dev/null; then
-  echo "source ~/.eiskrc" >> ~/.bash_profile
-else
-  printf "${red}"
-  printf "You'll need to remove $FINDROOT if you want to re-install.\n"
-  printf "${end}"
-  exit 1
-fi
+  if ! grep -Fxq "source ~/.eiskrc" ~/$1  > /dev/null; then
+    echo "source ~/.eiskrc" >> ~/$1
+  else
+    printf "${red}"
+    printf "You'll need to remove $FINDROOT if you want to re-install.\n"
+    printf "${end}"
+    exit 1
+  fi
+}
+
+sourceFileInstall .bashrc
+sourceFileInstall .bash_profile
 
 printf "${green}"
 echo ""
