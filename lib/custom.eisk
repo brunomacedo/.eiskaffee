@@ -1,0 +1,40 @@
+#!/bin/bash
+
+alias kubectl=kubectl
+alias www='cd /c/App/www'
+alias templates='cd /c/App/www/templates'
+
+templates_folder="/c/App/www/templates"
+apache_folder="/c/App/www/apache"
+uolp="/c/App/projects"
+contabilidade="/c/App/projects/contabilidade"
+
+function upall {
+  upis $uolp
+  upis $apache_folder
+  upis $templates_folder
+  upis $contabilidade
+}
+
+function run {
+  www
+  sh run.sh 80 443
+}
+
+function open {
+  www
+  gulp open $1
+}
+
+function dev {
+  www
+  gulp dev $1
+}
+
+function hosts {
+  if [ $1 = "open" ]; then
+    code /c/Windows/System32/drivers/etc/hosts
+  else
+    cp /c/Windows/System32/drivers/etc/$1 /c/Windows/System32/drivers/etc/hosts
+  fi
+}
