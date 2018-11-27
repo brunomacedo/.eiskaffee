@@ -13,5 +13,4 @@ alias add="git add"
 if [ $(getSystemOS) = "Msys" ]; then
   alias vscode='"$HOME/AppData/Local/Programs/Microsoft VS Code/Code.exe"'
   alias code=vscode
-  alias hosts='vscode "/c/Windows/System32/drivers/etc/hosts"'
 fi
