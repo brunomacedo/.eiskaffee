@@ -32,9 +32,9 @@ function dev {
 }
 
 function hosts {
-  if [ $1 = "open" ]; then
-    code /c/Windows/System32/drivers/etc/hosts
-  else
+  if [ "$1" != "" ] && [ "$1" ]; then
     cp /c/Windows/System32/drivers/etc/$1 /c/Windows/System32/drivers/etc/hosts
+  else
+    code /c/Windows/System32/drivers/etc/hosts
   fi
 }
