@@ -38,3 +38,29 @@ function hosts {
     code /c/Windows/System32/drivers/etc/hosts
   fi
 }
+
+function redirectTo {
+  # ~/Desktop/templateRedir.vm
+  # REDIRECTSTRING
+  # academia/noticias/2015/01/18/7-ideias-de-negocios-online-para-voce-montar.html
+  # https://meunegocio.uol.com.br/academia/e-commerce/7-ideias-de-negocios-online-para-voce-montar.html
+
+  # template
+  # replace string to
+  # arquivo para criar
+  # url replace
+  # criar novo arquivo
+
+  # echo "$1" | sed "s/[áàâãä@]/a/g"
+  # sed -i "/REDIRECTSTRING/d" ~/Desktop/templateRedir.vm
+
+  local FILESTOREP=""
+
+  if ! grep -Fxq "REDIRECTSTRING" ~/Desktop/templateRedir.vm  > /dev/null; then
+    FILESTOREP="$(sed -e s/REDIRECTSTRING/meunegocio/g ~/Desktop/templateRedir.vm)"
+    # echo $FILESTOREP
+    # touch ~/Desktop/newFile.vm
+    echo $FILESTOREP >> ~/Desktop/newFile.vm
+    # echo ~/Desktop/newFile.vm >> $FILESTOREP
+  fi
+}
