@@ -66,7 +66,8 @@ function redirectTo {
     for (( i = 0; i < ${#FILESTOREP[@]}; ++i )); do
       UNO=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 1)
       DOS=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 2)
-      echo "$UNO > $DOS"
+      NEW_PATH=$(echo ${UNO/"https://uolhost.uol/"/""})
+      echo "$NEW_PATH > $DOS"
       # cp --parents ${FILESTOREP[$i]} $1
     done
   fi
