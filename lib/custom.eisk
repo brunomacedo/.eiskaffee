@@ -67,8 +67,14 @@ function redirectTo {
       UNO=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 1)
       DOS=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 2)
       NEW_PATH=$(echo ${UNO/"https://uolhost.uol/"/""})
-      echo "$NEW_PATH > $DOS"
-      # cp --parents ${FILESTOREP[$i]} $1
+      # echo "$NEW_PATH > $DOS"
+
+      if ! grep -Fxq "REDIRECTSTRING" ~/Desktop/templateRedir.vm  > /dev/null; then
+        FILESTOREP="$(sed -e s/REDIRECTSTRING/$DOS/g ~/Desktop/templateRedir.vm)"
+        echo $FILESTOREP >> ~/Desktop/$NEW_PATH
+        # echo ~/Desktop/newFile.vm >> $FILESTOREP
+        # cp --parents ${FILESTOREP[$i]} $1
+      fi
     done
   fi
 }
