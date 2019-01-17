@@ -45,22 +45,29 @@ function redirectTo {
   # academia/noticias/2015/01/18/7-ideias-de-negocios-online-para-voce-montar.html
   # https://meunegocio.uol.com.br/academia/e-commerce/7-ideias-de-negocios-online-para-voce-montar.html
 
-  # template
-  # replace string to
-  # arquivo para criar
-  # url replace
-  # criar novo arquivo
+  # ARR
+  # "academia/noticias/2015/01/18/7-ideias-de-negocios-online-para-voce-montar.html,https://meunegocio.uol.com.br/academia/e-commerce/7-ideias-de-negocios-online-para-voce-montar.html"
 
-  # echo "$1" | sed "s/[áàâãä@]/a/g"
-  # sed -i "/REDIRECTSTRING/d" ~/Desktop/templateRedir.vm
+  # if ! grep -Fxq "REDIRECTSTRING" ~/Desktop/templateRedir.vm  > /dev/null; then
+  #   FILESTOREP="$(sed -e s/REDIRECTSTRING/meunegocio/g ~/Desktop/templateRedir.vm)"
+  #   # echo $FILESTOREP
+  #   # touch ~/Desktop/newFile.vm
+  #   echo $FILESTOREP >> ~/Desktop/newFile.vm
+  #   # echo ~/Desktop/newFile.vm >> $FILESTOREP
+  # fi
 
-  local FILESTOREP=""
+  OLDIFS=""
+  IFS=$'\n'
+  local FILESTOREP=()
+  if [ ! -d ~/Desktop/listArray.txt ]; then
+    FILESTOREP=($(cat ~/Desktop/listArray.txt))
 
-  if ! grep -Fxq "REDIRECTSTRING" ~/Desktop/templateRedir.vm  > /dev/null; then
-    FILESTOREP="$(sed -e s/REDIRECTSTRING/meunegocio/g ~/Desktop/templateRedir.vm)"
-    # echo $FILESTOREP
-    # touch ~/Desktop/newFile.vm
-    echo $FILESTOREP >> ~/Desktop/newFile.vm
-    # echo ~/Desktop/newFile.vm >> $FILESTOREP
+    IFS=$OLDIFS
+    for (( i = 0; i < ${#FILESTOREP[@]}; ++i )); do
+      UNO=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 1)
+      DOS=$(echo ${FILESTOREP[$i]} | cut -d ";" -f 2)
+      echo "$UNO > $DOS"
+      # cp --parents ${FILESTOREP[$i]} $1
+    done
   fi
 }
