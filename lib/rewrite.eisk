@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Copy a file from template and replace a string inside it
+# Usage: rewriteFile <template> <file_array> <find_string>
+# where:
+#     <template>    :
+#     <file_array>  : a file that reads line by line and it is separated by semicolon (;)
+#     <find_string> : its find a string in your file to replace from list of array
+#     <destination> : where your put your modifed files in. E.g: ~/Desktop/path
+rewriteFile() {
+  OLDIFS=""
+  IFS=$'\n'
+  local FILES_ARRAY=()
+  local FILES_STRING=""
+  if [ ! -d $2 ]; then
+    FILES_ARRAY=($(cat $2))
+
+    IFS=$OLDIFS
+    for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
+      UNO=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
+      DOS=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 2)
+      NEW_PATH=$(echo ${UNO/"https://"/""})
+
+      if ! grep -Fxq "$3" $1  > /dev/null; then
+        forceCreateFile ${4}${NEW_PATH}
+        cp $1 ${4}${NEW_PATH}
+        replaceStringIntoFile "$3" "$DOS" ${4}${NEW_PATH}
+        echo "$DOS > $NEW_PATH"
+      fi
+    done
+  fi
+}
+
+# Replace a string in a file
+# Usage: replaceStringIntoFile <find_string> <replace_to> <destination>
+# where:
+#     <find_string>:  "EXAMPLE"
+#     <replace_to> :  "NEWEXAMPLE"
+#     <destination>:  ~/Desktop/path
+replaceStringIntoFile() {
+  sed -i -e 's,'"$1"','"$2"',g' $3
+}
+
+forceCreateFile() {
+  mkdir -p "$(dirname "$1")" || return; touch "$1";
+}
