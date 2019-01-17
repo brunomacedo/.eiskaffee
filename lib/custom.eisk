@@ -38,36 +38,3 @@ function hosts {
     code /c/Windows/System32/drivers/etc/hosts
   fi
 }
-
-function redirectTo {
-  OLDIFS=""
-  IFS=$'\n'
-  local FILES_ARRAY=()
-  local FILES_STRING=""
-  if [ ! -d ~/Desktop/listArray.txt ]; then
-    FILES_ARRAY=($(cat ~/Desktop/listArray.txt))
-
-    IFS=$OLDIFS
-    for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
-      UNO=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
-      DOS=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 2)
-      NEW_PATH=$(echo ${UNO/"https://uolhost.uol/"/""})
-
-      if ! grep -Fxq "REDIRECTSTRING" ~/Desktop/templateRedir.vm  > /dev/null; then
-        forceCreateFile ~/Desktop/redir/$NEW_PATH
-        cp ~/Desktop/templateRedir.vm ~/Desktop/redir/$NEW_PATH
-        replaceStringIntoFiles "REDIRECTSTRING" "$DOS" ~/Desktop/redir/$NEW_PATH
-        echo "$DOS > $NEW_PATH"
-      fi
-    done
-  fi
-}
-
-# command <find_string> <replace_to> <destination>
-function replaceStringIntoFiles() {
-  sed -i -e 's,'"$1"','"$2"',g' $3
-}
-
-function forceCreateFile() {
-  mkdir -p "$(dirname "$1")" || return; touch "$1";
-}
