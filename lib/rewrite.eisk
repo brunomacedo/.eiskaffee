@@ -19,14 +19,14 @@ rewriteFile() {
     for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
       UNO=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
       DOS=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 2)
-      NEW_PATH=$(echo ${UNO/"https://"/""})
+      NEW_PATH="$(echo $UNO | sed 's/https\?:\/\///g')"
       CHECK_URL=$(checkFileOrDiretory $NEW_PATH)
 
       if ! grep -Fxq "$3" $1  > /dev/null; then
         forceCreateFile ${4}${CHECK_URL}
         cp $1 ${4}${CHECK_URL}
         replaceStringIntoFile "$3" "$DOS" ${4}${CHECK_URL}
-        echo "$DOS > $CHECK_URL"
+        echo -e "created: ${lightblueb}${CHECK_URL}${end}"
       fi
     done
   fi
