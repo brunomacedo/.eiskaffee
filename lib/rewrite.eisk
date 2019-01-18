@@ -20,12 +20,13 @@ rewriteFile() {
       UNO=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
       DOS=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 2)
       NEW_PATH=$(echo ${UNO/"https://"/""})
+      CHECK_URL=$(checkFileOrDiretory $NEW_PATH)
 
       if ! grep -Fxq "$3" $1  > /dev/null; then
-        forceCreateFile ${4}${NEW_PATH}
-        cp $1 ${4}${NEW_PATH}
-        replaceStringIntoFile "$3" "$DOS" ${4}${NEW_PATH}
-        echo "$DOS > $NEW_PATH"
+        forceCreateFile ${4}${CHECK_URL}
+        cp $1 ${4}${CHECK_URL}
+        replaceStringIntoFile "$3" "$DOS" ${4}${CHECK_URL}
+        echo "$DOS > $CHECK_URL"
       fi
     done
   fi
@@ -42,5 +43,16 @@ replaceStringIntoFile() {
 }
 
 forceCreateFile() {
-  mkdir -p "$(dirname "$1")" || return; touch "$1";
+  mkdir -p "$(dirname "$1")" || return; touch "$1"
+}
+
+checkFileOrDiretory() {
+  local ISTRAILINGSLASH=$(echo $1 | sed 's/\/$//g')
+  local ISFILE=$(printf '%s\n' "${ISTRAILINGSLASH##*/}")
+
+  if [[ ! $ISFILE = *.html ]]; then
+    echo "$ISTRAILINGSLASH/index.html"
+  else
+    echo "$ISTRAILINGSLASH"
+  fi
 }
