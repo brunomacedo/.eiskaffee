@@ -1,4 +1,4 @@
-# Imports
+# IMPORTS
 source ${FINDROOT}/tools/system.eisk
 source ${FINDROOT}/lib/colors.eisk
 source ${FINDROOT}/lib/alias.eisk
