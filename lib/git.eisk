@@ -175,3 +175,10 @@ cplist() {
     echo -e "${lightblueb}Sorry, but it works only in Msys System =)${end}"
   fi
 }
+
+# Copy files with all parents folders
+# Usage: copied <file> <destine>
+#     Example: copied ~/Desktop/myfolder
+copied() {
+  cp --parents $1 $2
+}
