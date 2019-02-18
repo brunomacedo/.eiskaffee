@@ -139,6 +139,10 @@ gcommit() {
 #     Example: cplist ~/Desktop/myfolder
 #     Example: cplist ~/Desktop/myfolder 8c0902
 cplist() {
+  if [ ! -d $1 ]; then
+    mkdir -p $1
+  fi
+
   if [ $(getSystemOS) = "Msys" ]; then
     OLDIFS=""
     IFS=$'\n'
