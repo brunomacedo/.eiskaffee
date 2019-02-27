@@ -4,18 +4,21 @@ alias kubectl=kubectl
 alias www='cd /c/App/www'
 alias templates='cd /c/App/www/templates'
 
-templates_folder="/c/App/www/templates"
-apache_folder="/c/App/www/apache"
 uolp="/c/App/projects"
-contabilidade="/c/App/projects/contabilidade"
+apache_folder="/c/App/www/apache"
+templates_folder="/c/App/www/templates"
+
+sagui="/c/App/projects/sagui"
 clubeuol="/c/App/projects/clubeuol"
+contabilidade="/c/App/projects/contabilidade"
 
 function upall {
+  upis $sagui
+  upis $clubeuol
+  upis $contabilidade
   upis $uolp
   upis $apache_folder
   upis $templates_folder
-  upis $contabilidade
-  upis $clubeuol
 }
 
 function run {
