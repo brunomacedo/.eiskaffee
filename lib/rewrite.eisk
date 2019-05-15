@@ -53,13 +53,13 @@ rewriteFile() {
   else
     echo ""
     printf "${redb}Copy a file from template and replace a string inside it${end}"
-    printf "\n${yellowb}Usage:${end} rewriteFile <template> <file_array> <find_string> <status>"
+    printf "\n${yellowb}Usage:${end} rewriteFile <template> <file_array> <find_string> -status"
     echo ""
     printf "\nwhere:"
     printf "\n    ${purple}<template>${end}    :"
     printf "\n    ${purple}<file_array>${end}  : a file that reads line by line separated or not by semicolon (;)"
     printf "\n    ${purple}<find_string>${end} : ${greenb}optional${end} - its find a string in your file to replace from list of array"
-    printf "\n    ${purple}<status>${end}      : ${greenb}optional${end} - check if status code response with 200"
+    printf "\n    ${purple}-status${end}       : ${greenb}optional${end} - check if status code response with 200"
     echo ""
   fi
 }
