@@ -1,36 +1,64 @@
 #!/bin/bash
 
 # Copy a file from template and replace a string inside it
-# Usage: rewriteFile <template> <file_array> <find_string>
+# Usage: rewriteFile <template> <file_array> <find_string> -status
 # where:
 #     <template>    :
 #     <file_array>  : a file that reads line by line separated or not by semicolon (;)
-#     <find_string> : its find a string in your file to replace from list of array
+#     <find_string> : optional - its find a string in your file to replace from list of array
+#     -status       : optional - check if status code response with 200
 rewriteFile() {
-  OLDIFS=""
-  IFS=$'\n'
-  local FILES_ARRAY=()
-  local FILES_STRING=""
-  if [ ! -d $2 ]; then
-    FILES_ARRAY=($(cat $2))
+  if [ "$1" != "" ] && [ "$1" ]; then
+    OLDIFS=""
+    IFS=$'\n'
+    local FILES_ARRAY=()
+    local FILES_STRING=""
+    local COUNTER_ITEM=0
 
-    IFS=$OLDIFS
-    for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
-      UNO=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
-      NEW_PATH="$(echo $UNO | sed 's/https\?:\/\///g')"
-      CHECK_URL=$(checkFileOrDiretory $NEW_PATH)
+    if [ ! -d $2 ]; then
+      FILES_ARRAY=($(cat $2))
+      IFS=$OLDIFS
+      STATUS_CODE=200
+      EXCLUDE_STATUS=301
 
-      if ! grep -Fxq "$3" $1  > /dev/null; then
-        forceCreateFile ${CHECK_URL}
-        cp $1 ${CHECK_URL}
+      for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
+        FULL_URL=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
+        REMOVE_HTTPS_URL="$(echo $FULL_URL | sed 's/https\?:\/\///g')"
 
-        if [ "$3" != "" ] && [ "$3" ]; then
-          replaceStringIntoFile "$3" "$UNO" ${CHECK_URL}
+        if [[ $@ = *"-status"* ]]; then
+        # if [[ "${@#-status}" = "$@" ]]; then
+          STATUS_CODE=$(checkStatusCode $FULL_URL)
         fi
 
-        echo -e "created: ${lightblueb}${CHECK_URL}${end}"
-      fi
-    done
+        if [ ! $STATUS_CODE = $EXCLUDE_STATUS ]; then
+          CHECK_URL=$(checkFileOrDiretory $REMOVE_HTTPS_URL)
+          COUNTER_ITEM=$((COUNTER_ITEM + 1))
+
+          forceCreateFile ${CHECK_URL}
+          cp $1 ${CHECK_URL}
+
+          if [ "$3" != "-status" ] && [ "$3" != "" ] && [ "$3" ]; then
+            if ! grep -Fxq "$3" $1  > /dev/null; then
+              replaceStringIntoFile "$3" "$FULL_URL" ${CHECK_URL}
+            fi
+          fi
+
+          echo -e "${lightblueb}$COUNTER_ITEM${end} - ${CHECK_URL}"
+        fi
+      done
+    fi
+
+  else
+    echo ""
+    printf "${redb}Copy a file from template and replace a string inside it${end}"
+    printf "\n${yellowb}Usage:${end} rewriteFile <template> <file_array> <find_string> <status>"
+    echo ""
+    printf "\nwhere:"
+    printf "\n    ${purple}<template>${end}    :"
+    printf "\n    ${purple}<file_array>${end}  : a file that reads line by line separated or not by semicolon (;)"
+    printf "\n    ${purple}<find_string>${end} : ${greenb}optional${end} - its find a string in your file to replace from list of array"
+    printf "\n    ${purple}<status>${end}      : ${greenb}optional${end} - check if status code response with 200"
+    echo ""
   fi
 }
 
@@ -57,4 +85,12 @@ checkFileOrDiretory() {
   else
     echo "$ISTRAILINGSLASH"
   fi
+}
+
+# Check status code from an url
+# Usage: checkStatusCode https://brunomacedo.com.br
+# Terminal: 200
+checkStatusCode() {
+  STATUS_CODE=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$1")
+  echo $STATUS_CODE
 }
