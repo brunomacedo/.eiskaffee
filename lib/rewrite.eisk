@@ -34,7 +34,6 @@ rewriteFile() {
 
         if [ ! $STATUS_CODE = $EXCLUDE_STATUS ]; then
           CHECK_URL=$(checkFileOrDiretory $REMOVE_HTTPS_URL)
-          COUNTER_ITEM=$((COUNTER_ITEM + 1))
 
           forceCreateFile ${CHECK_URL}
           cp $1 ${CHECK_URL}
@@ -44,9 +43,10 @@ rewriteFile() {
               replaceStringIntoFile "$3" "$CLEAN_URL" ${CHECK_URL}
             fi
           fi
-
-          echo -e "${lightblueb}$COUNTER_ITEM${end} - ${CHECK_URL}"
         fi
+
+        COUNTER_ITEM=$((COUNTER_ITEM + 1))
+        echo -e "${lightblueb}$COUNTER_ITEM${end} - ${yellowb}$STATUS_CODE${end} ${CLEAN_URL}"
       done
     fi
 
