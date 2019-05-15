@@ -22,5 +22,5 @@
 #
 #-----------------------------------------------
 
-export FINDROOT=~/.eiskaffee
-source $FINDROOT/eiskaffee.sh
+export EISK_HOME=~/.eiskaffee
+source $EISK_HOME/eiskaffee.sh
