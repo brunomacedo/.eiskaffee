@@ -23,11 +23,12 @@ rewriteFile() {
 
       for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
         FULL_URL=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
-        REMOVE_HTTPS_URL="$(echo $FULL_URL | sed 's/https\?:\/\///g')"
+        REMOVE_PARAMS_URL=$(removeParamsFromURL $FULL_URL)
+        REMOVE_HTTPS_URL="$(echo $REMOVE_PARAMS_URL | sed 's/https\?:\/\///g')"
 
         if [[ $@ = *"-status"* ]]; then
         # if [[ "${@#-status}" = "$@" ]]; then
-          STATUS_CODE=$(checkStatusCode $FULL_URL)
+          STATUS_CODE=$(checkStatusCode $REMOVE_PARAMS_URL)
         fi
 
         if [ ! $STATUS_CODE = $EXCLUDE_STATUS ]; then
@@ -39,7 +40,7 @@ rewriteFile() {
 
           if [ "$3" != "-status" ] && [ "$3" != "" ] && [ "$3" ]; then
             if ! grep -Fxq "$3" $1  > /dev/null; then
-              replaceStringIntoFile "$3" "$FULL_URL" ${CHECK_URL}
+              replaceStringIntoFile "$3" "$REMOVE_PARAMS_URL" ${CHECK_URL}
             fi
           fi
 
@@ -93,4 +94,9 @@ checkFileOrDiretory() {
 checkStatusCode() {
   STATUS_CODE=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$1")
   echo $STATUS_CODE
+}
+
+removeParamsFromURL() {
+  local REPLACE=$(echo $1 | cut -d "?" -f 1 | cut -d "#" -f 1)
+  echo "$REPLACE"
 }
