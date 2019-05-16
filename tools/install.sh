@@ -9,20 +9,20 @@ command -v git >/dev/null 2>&1 || {
   exit 1
 }
 
-if [ ! -n "$FINDROOT" ]; then
-  FINDROOT=~/.eiskaffee
+if [ ! -n "$EISK_HOME" ]; then
+  EISK_HOME=~/.eiskaffee
 fi
 
-if [ ! -d $FINDROOT ]; then
-  env git clone --depth=1 "$REPOSITORY" "$FINDROOT" || {
+if [ ! -d $EISK_HOME ]; then
+  env git clone --depth=1 "$REPOSITORY" "$EISK_HOME" || {
     printf "Error: git clone of eiskaffee repo failed\n"
     exit 1
   }
 fi
 
 if [ ! -f ~/.eiskrc ]; then
-  if [ -f $FINDROOT/templates/.eiskrc ]; then
-    cp $FINDROOT/templates/.eiskrc ~/.eiskrc
+  if [ -f $EISK_HOME/templates/.eiskrc ]; then
+    cp $EISK_HOME/templates/.eiskrc ~/.eiskrc
   else
     printf "${red}"
     echo "No such file or directory."
@@ -40,7 +40,7 @@ function sourceFileInstall {
     echo "source ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
-    printf "You'll need to remove $FINDROOT if you want to re-install.\n"
+    printf "You'll need to remove $EISK_HOME if you want to re-install.\n"
     printf "${end}"
     exit 1
   fi

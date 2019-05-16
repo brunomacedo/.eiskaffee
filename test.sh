@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source ./eiskaffee.sh
+# [[ -f eiskaffee.sh ]] && . eiskaffee.sh
+
+source ./templates/.eiskrc
 
 test_replace_characters() {
   result=$(replace_characters "Açãí  Fruit")
