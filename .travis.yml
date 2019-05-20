@@ -4,6 +4,9 @@ os:
   - osx
   # - linux
 
+before_script:
+  - sh ./tools/install.sh
+
 script:
   - sh ./test.sh
 
