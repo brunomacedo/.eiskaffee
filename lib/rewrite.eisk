@@ -1,34 +1,35 @@
 #!/bin/bash
 
 # Copy a file from template and replace a string inside it
-# Usage: rewriteFile <template> <file_array> <find_string> -status
-# where:
-#     <template>    :
-#     <file_array>  : a file that reads line by line separated or not by semicolon (;)
-#     <find_string> : optional - its find a string in your file to replace from list of array
-#     -status       : optional - check if status code response with 200
 rewriteFile() {
   if [ "$1" != "" ] && [ "$1" ]; then
-    OLDIFS=""
+    OLDIFS=$IFS
     IFS=$'\n'
+
     local FILES_ARRAY=()
+    local DEST_FILE=()
     local FILES_STRING=""
     local COUNTER_ITEM=0
 
     if [ ! -d $2 ]; then
       FILES_ARRAY=($(cat $2))
-      IFS=$OLDIFS
       STATUS_CODE=200
       EXCLUDE_STATUS=301
 
-      for (( i = 0; i < ${#FILES_ARRAY[@]}; ++i )); do
-        FULL_URL=$(echo ${FILES_ARRAY[$i]} | cut -d ";" -f 1)
+      # CAT ARRAY DEST
+      if [ "$4" != "-status" ] && [ "$4" != "" ] && [ "$4" ]; then
+        if [ ! -d $4 ]; then
+          DEST_FILE=($(cat $4))
+        fi
+      fi
+
+      for (( index = 0; index < ${#FILES_ARRAY[@]}; ++index )); do
+        FULL_URL=$(echo ${FILES_ARRAY[$index]} | cut -d ";" -f 1)
         REMOVE_PARAMS_URL=$(removeParamsFromURL $FULL_URL)
         CLEAN_URL=$(replace_characters $REMOVE_PARAMS_URL)
         REMOVE_HTTPS_URL="$(echo $CLEAN_URL | sed 's/https\?:\/\///g')"
 
         if [[ $@ = *"-status"* ]]; then
-        # if [[ "${@#-status}" = "$@" ]]; then
           STATUS_CODE=$(checkStatusCode $CLEAN_URL)
         fi
 
@@ -40,6 +41,19 @@ rewriteFile() {
 
           if [ "$3" != "-status" ] && [ "$3" != "" ] && [ "$3" ]; then
             if ! grep -Fxq "$3" $1  > /dev/null; then
+
+              # IF ARRAY DEST
+              if [ "$4" != "-status" ] && [ "$4" != "" ] && [ "$4" ]; then
+                if [ ! -d $4 ]; then
+                  if ! grep -Fxq "$4" $1  > /dev/null; then
+                    FULL_URL=$(echo ${DEST_FILE[$index]} | cut -d ";" -f 1)
+                    REMOVE_PARAMS_URL=$(removeParamsFromURL $FULL_URL)
+                    CLEAN_URL=$(replace_characters $REMOVE_PARAMS_URL)
+                  fi
+                fi
+              fi
+              # IF ARRAY DEST
+
               replaceStringIntoFile "$3" "$CLEAN_URL" ${CHECK_URL}
             fi
           fi
@@ -50,15 +64,17 @@ rewriteFile() {
       done
     fi
 
+    IFS=$OLDIFS
   else
     echo ""
     printf "${redb}Copy a file from template and replace a string inside it${end}"
-    printf "\n${yellowb}Usage:${end} rewriteFile <template> <file_array> <find_string> -status"
+    printf "\n${yellowb}Usage:${end} rewriteFile <template> <origin_file> <find_string> <dest_file> -status"
     echo ""
     printf "\nwhere:"
     printf "\n    ${purple}<template>${end}    :"
-    printf "\n    ${purple}<file_array>${end}  : a file that reads line by line separated or not by semicolon (;)"
+    printf "\n    ${purple}<origin_file>${end} : a file that reads line by line separated or not by semicolon (;)"
     printf "\n    ${purple}<find_string>${end} : ${greenb}optional${end} - its find a string in your file to replace from list of array"
+    printf "\n    ${purple}<dest_file>${end}   : ${greenb}optional${end} - a file that reads line by line separated or not by semicolon (;)"
     printf "\n    ${purple}-status${end}       : ${greenb}optional${end} - check if status code response with 200"
     echo ""
   fi
