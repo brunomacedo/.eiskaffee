@@ -5,6 +5,10 @@ source $EISK_HOME/lib/alias.eisk
 source $EISK_HOME/lib/git.eisk
 source $EISK_HOME/lib/npm.eisk
 source $EISK_HOME/lib/rewrite.eisk
-source $EISK_HOME/lib/custom.eisk
+source $EISK_HOME/lib/develop.eisk
 source $EISK_HOME/tools/rename.eisk
 source $EISK_HOME/tools/settings.eisk
+
+if [ $(getSystemOS) = "Msys" ]; then
+  source $EISK_HOME/lib/custom.eisk
+fi
