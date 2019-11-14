@@ -43,3 +43,11 @@ function hosts {
     code /c/Windows/System32/drivers/etc/hosts
   fi
 }
+
+function deleteFile {
+  if [ "$1" != "" ] && [ "$1" ]; then
+    find $1 -name "$2" -delete
+  else
+    echo "Usage: deleteFile <path> <file>"
+  fi
+}
