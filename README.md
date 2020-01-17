@@ -57,6 +57,18 @@ Restart your terminal. =D
 
 # Anotations
 
+## Kubernetes Completion On Windows
+
+```bash
+kubectl.exe completion bash > ~/kubectl-completion.bash
+```
+
+### `~/.bashrc`
+
+```bash
+source ~/kubectl-completion.bash
+```
+
 ## Loop `for`: difference
 
 - `Msys`
