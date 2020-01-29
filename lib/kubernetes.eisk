@@ -1,0 +1,5 @@
+#!/bin/bash
+
+function clusterLogin {
+  echo "kubectl config get-contexts --output=name"
+}
