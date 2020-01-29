@@ -8,6 +8,7 @@ source $EISK_HOME/lib/rewrite.eisk
 source $EISK_HOME/lib/develop.eisk
 source $EISK_HOME/tools/rename.eisk
 source $EISK_HOME/tools/settings.eisk
+source $EISK_HOME/lib/kubernetes.eisk
 
 if [ $(getSystemOS) = "Msys" ]; then
   source $EISK_HOME/lib/custom.eisk

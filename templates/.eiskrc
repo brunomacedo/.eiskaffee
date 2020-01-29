@@ -11,6 +11,7 @@
 #   2. rename
 #   3. system
 #   4. update
+#   5. precommit
 #
 #   Modules:
 #   1. alias
@@ -20,6 +21,7 @@
 #   5. rewrite
 #   6. custom
 #   7. develop
+#   8. kubernetes
 #
 #-----------------------------------------------
 
