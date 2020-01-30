@@ -1,5 +1,46 @@
 #!/bin/bash
 
-function clusterLogin {
-  echo "kubectl config get-contexts --output=name"
+function k8s() {
+  OLDIFS=""
+  IFS=$'\n'
+
+  local clusters=($(kubectl config get-contexts --output=name))
+
+  IFS=$OLDIFS
+
+  for (( i = 0; i < ${#clusters[@]}; ++i )); do
+    echo -e "Options ${blueb}${clusters[$i]}${end}"
+  done
+
+
+  # local options=$(getopt -q -l "help,version" -o "hv:Vrd" -a -- "$@")
+
+  # if [[ $# -eq 0 ]]; then
+  #   echo "Incorrect options provided."
+  # else
+  #   eval set -- "$options"
+
+  #   while true; do
+  #   case "$1" in
+  #     -h|--help)
+  #       echo "Help."
+  #       ;;
+  #     -V|--version)
+  #       echo "Version."
+  #       ;;
+  #     --)
+  #       shift
+  #       break
+  #       ;;
+  #   esac
+  #     shift
+  #   done
+  # fi
 }
+
+function _get_all_contexts_() {
+  local clusters=($(kubectl config get-contexts --output=name))
+  COMPREPLY=($(compgen -W "$(printf "%q " "${clusters[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _get_all_contexts_ k8s
