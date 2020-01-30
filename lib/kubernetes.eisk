@@ -38,8 +38,8 @@ function k8s() {
   # fi
 }
 
-function _get_all_contexts_() {
-  local clusters=($(kubectl config get-contexts --output=name))
+_get_all_contexts_() {
+  clusters=($(kubectl config get-contexts --output=name))
   COMPREPLY=($(compgen -W "$(printf "%q " "${clusters[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
