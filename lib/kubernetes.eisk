@@ -1,46 +1,68 @@
 #!/bin/bash
 
-function k8s() {
-  OLDIFS=""
-  IFS=$'\n'
+_k8s_login() {
+  echo "Login: $1"
+}
 
-  local clusters=($(kubectl config get-contexts --output=name))
+k8s() {
+  COMPREPLY=()
+  _kubectl_out=($(kubectl config get-contexts --output=name))
 
-  IFS=$OLDIFS
+  if [[ $# -eq 0 ]]; then
+    echo "Incorrect options provided."
+    return 0
+  fi
 
-  for (( i = 0; i < ${#clusters[@]}; ++i )); do
-    echo -e "Options ${blueb}${clusters[$i]}${end}"
+  case "$1" in
+   login)
+      _k8s_login "$2"
+      return 0
+      ;;
+   -h|--help)
+      _k8s_usage_
+      ;;
+  esac
+}
+
+_k8s_usage_() {
+  echo "   Login commands:"
+  echo ""
+  echo "     Usage:   kubeuol login ${yellowb}<environment>${end}"
+  echo "     Example: kubeuol login production.sa-east-1a"
+  echo ""
+  echo "     Where ${yellowb}<environment>${end} is one of:"
+  echo ""
+  for k8s_context in "${_kubectl_out[@]}"; do
+    echo "       ${greenb}->${end} ${k8s_context}"
   done
-
-
-  # local options=$(getopt -q -l "help,version" -o "hv:Vrd" -a -- "$@")
-
-  # if [[ $# -eq 0 ]]; then
-  #   echo "Incorrect options provided."
-  # else
-  #   eval set -- "$options"
-
-  #   while true; do
-  #   case "$1" in
-  #     -h|--help)
-  #       echo "Help."
-  #       ;;
-  #     -V|--version)
-  #       echo "Version."
-  #       ;;
-  #     --)
-  #       shift
-  #       break
-  #       ;;
-  #   esac
-  #     shift
-  #   done
-  # fi
+  echo ""
+  printf "  ${blueb}More info:${end} https://confluence.intranet.uol.com.br/confluence/display/CONTUOL/Kubernetes+-+Ambientes"
+  echo ""
+  echo ""
+  echo "    Other commands:"
+  echo ""
+  echo "      Usage:   kubeuol grafana         Open Grafana Dashboard for the current-context and cluster, in a default browser"
 }
 
 _get_all_contexts_() {
-  clusters=($(kubectl config get-contexts --output=name))
-  COMPREPLY=($(compgen -W "$(printf "%q " "${clusters[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  local prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  case "$prev" in
+    -*)
+      return
+      ;;
+    login)
+      # COMPREPLY=($( compgen -W "$(printf "%q " "${_kubectl_out[@]}")" -- "${cur}"))
+      COMPREPLY=($(compgen -W "${_kubectl_out[*]}" -- "$cur"))
+      # COMPREPLY=($( compgen -W "$(printf "%q " "${_kubectl_out[*]}")" -- "${cur}"))
+      return
+      ;;
+  esac
 }
 
-complete -F _get_all_contexts_ k8s
+_start_k8s_() {
+  _get_all_contexts_
+}
+
+complete -F _start_k8s_ k8s
