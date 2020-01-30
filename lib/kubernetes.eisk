@@ -1,13 +1,29 @@
 #!/bin/bash
 
+COMPREPLY=()
+_kubectl_out=($(kubectl config get-contexts --output=name))
+
+_k8s_usage_() {
+  echo "   Login commands:"
+  echo ""
+  echo "     Usage:   kubeuol login ${yellowb}<environment>${end}"
+  echo "     Example: kubeuol login production.sa-east-1a"
+  echo ""
+  echo "     Where ${yellowb}<environment>${end} is one of:"
+  echo ""
+  for k8s_context in "${_kubectl_out[@]}"; do
+    echo "       ${greenb}->${end} ${k8s_context}"
+  done
+  echo ""
+  printf "  ${blueb}More info:${end} https://kubernetes.io/docs/home/"
+  echo ""
+}
+
 _k8s_login() {
   echo "Login: $1"
 }
 
 k8s() {
-  COMPREPLY=()
-  _kubectl_out=($(kubectl config get-contexts --output=name))
-
   if [[ $# -eq 0 ]]; then
     echo "Incorrect options provided."
     return 0
@@ -24,29 +40,11 @@ k8s() {
   esac
 }
 
-_k8s_usage_() {
-  echo "   Login commands:"
-  echo ""
-  echo "     Usage:   kubeuol login ${yellowb}<environment>${end}"
-  echo "     Example: kubeuol login production.sa-east-1a"
-  echo ""
-  echo "     Where ${yellowb}<environment>${end} is one of:"
-  echo ""
-  for k8s_context in "${_kubectl_out[@]}"; do
-    echo "       ${greenb}->${end} ${k8s_context}"
-  done
-  echo ""
-  printf "  ${blueb}More info:${end} https://confluence.intranet.uol.com.br/confluence/display/CONTUOL/Kubernetes+-+Ambientes"
-  echo ""
-  echo ""
-  echo "    Other commands:"
-  echo ""
-  echo "      Usage:   kubeuol grafana         Open Grafana Dashboard for the current-context and cluster, in a default browser"
-}
-
 _get_all_contexts_() {
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  # (( COMP_CWORD == 1 ))
 
   case "$prev" in
     -*)
