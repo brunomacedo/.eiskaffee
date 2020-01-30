@@ -53,9 +53,7 @@ _get_all_contexts_() {
       return
       ;;
     login)
-      # COMPREPLY=($( compgen -W "$(printf "%q " "${_kubectl_out[@]}")" -- "${cur}"))
       COMPREPLY=($(compgen -W "${_kubectl_out[*]}" -- "$cur"))
-      # COMPREPLY=($( compgen -W "$(printf "%q " "${_kubectl_out[*]}")" -- "${cur}"))
       return
       ;;
   esac
