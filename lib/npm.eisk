@@ -36,7 +36,7 @@ version() {
   echo -e "${greenb}v${PACKAGE_VERSION}${end}"
 }
 
-_bump_completion_() {
+__bump_completion() {
   versions=()
   versions+=("major")
   versions+=("minor")
@@ -44,4 +44,4 @@ _bump_completion_() {
   COMPREPLY=($(compgen -W "$(printf "%q " "${versions[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
-complete -F _bump_completion_ bump
+complete -F __bump_completion bump
