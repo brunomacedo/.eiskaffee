@@ -1,5 +1,10 @@
 #!/bin/bash
 
+command -v kubectl >/dev/null 2>&1 || {
+  echo "Error: kubectl is not installed."
+  return
+}
+
 COMPREPLY=()
 # kubectl_out=($(kubectl config get-contexts --output=name))
 kubectl_out=($(kubectl config get-clusters | grep "intranet"))
