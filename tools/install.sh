@@ -38,6 +38,7 @@ function __sourceFileInstall {
     touch ~/$1
   fi
 
+  # FIX ON LINUX
   if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
     echo "source ~/.eiskrc" >> ~/$1
   else
