@@ -1,17 +1,20 @@
 #!/bin/bash
 
 COMPREPLY=()
-_kubectl_out=($(kubectl config get-contexts --output=name))
+# kubectl_out=($(kubectl config get-contexts --output=name))
+kubectl_out=($(kubectl config get-clusters | grep "intranet"))
+auth_url=""
+auth_action=""
+username=""
+password=""
 
-_k8s_usage_() {
-  echo "   Login commands:"
+__k8s_usage() {
   echo ""
-  echo "     Usage:   kubeuol login ${yellowb}<environment>${end}"
-  echo "     Example: kubeuol login production.sa-east-1a"
+  echo "     Usage:   k8s login ${yellowb}<environment>${end}"
   echo ""
   echo "     Where ${yellowb}<environment>${end} is one of:"
   echo ""
-  for k8s_context in "${_kubectl_out[@]}"; do
+  for k8s_context in "${kubectl_out[@]}"; do
     echo "       ${greenb}->${end} ${k8s_context}"
   done
   echo ""
@@ -19,46 +22,103 @@ _k8s_usage_() {
   echo ""
 }
 
-_k8s_login() {
-  echo "Login: $1"
+__get_auth_action_k8s_uol() {
+  local response=$(curl --write-out "HTTPSTATUS:%{http_code}" -s -k -L --insecure "$auth_url")
+  local http_status=$(echo "$response" | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]{3})$/\1/')
+  echo
+  if [ ! "$http_status" -eq 200 ]; then
+    printf "\n${greenb}Failed to connect:${end} $auth_url"
+    return
+  else
+    auth_action=$(echo $response | sed -nr 's/.*action="([^"]+)".*/\1/p')
+  fi
+}
+
+_login_k8s_uol() {
+  base_url="https://auth.kube-system.svc.cluster.$1"
+  auth_url="https://login.kube-system.svc.cluster.$1/auth"
+
+  __get_auth_action_k8s_uol
+
+  local login_url="$base_url$auth_action"
+  local login_result=$(curl --write-out "HTTPSTATUS:%{http_code}" -s -k -L --insecure "$login_url" --data 'login='"$username"'&password='"$password"'')
+  local login_http_status=$(echo "$login_result" | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]{3})$/\1/')
+
+  if [ ! "$login_http_status" -eq 200 ]; then
+    printf "Login failed! [HTTP status: ${redb}$login_http_status${end}]"
+    return
+  else
+    if echo "$login_result" | grep -q "login-error"; then
+      printf "\n   ${yellowb}Invalid Username and/or Password.${end}"
+    else
+      echo "$login_result" | sed -nr 's/.*data-clipboard-text="([^"]+)".*/\1/p' | bash
+    fi
+  fi
+}
+
+__k8s_login() {
+  if [ -z $1 ]; then
+    __k8s_usage
+    return
+  fi
+
+  read -r -p "Username: " username
+  if [ -z "$username" ]; then
+    echo "Username required."
+    return
+  fi
+
+  read -r -s -p "Password: " password
+  echo
+  if [ -z "$password" ]; then
+    echo "Password required."
+    return
+  fi
+
+  _login_k8s_uol "$1"
 }
 
 k8s() {
   if [[ $# -eq 0 ]]; then
-    echo "Incorrect options provided."
-    return 0
+    __k8s_usage
+    return
   fi
 
   case "$1" in
    login)
-      _k8s_login "$2"
+      __k8s_login "$2"
       return 0
       ;;
    -h|--help)
-      _k8s_usage_
+      __k8s_usage
       ;;
   esac
 }
 
-_get_all_contexts_() {
+# COMPLETION
+# bash completion for extends k8s
+__get_all_contexts() {
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
-  # (( COMP_CWORD == 1 ))
+  if (( COMP_CWORD == 1 )); then
+    COMPREPLY=($(compgen -W "--help login" -- "$cur"))
+    return
+  fi
 
   case "$prev" in
     -*)
       return
       ;;
     login)
-      COMPREPLY=($(compgen -W "${_kubectl_out[*]}" -- "$cur"))
+      COMPREPLY=($(compgen -W "${kubectl_out[*]}" -- "$cur"))
       return
       ;;
   esac
 }
 
-_start_k8s_() {
-  _get_all_contexts_
+__start_k8s() {
+  __get_all_contexts
 }
 
-complete -F _start_k8s_ k8s
+complete -F __start_k8s k8s
