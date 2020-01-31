@@ -1,3 +1,5 @@
+#!/bin/bash
+
 end=$'\033[0m'
 red=$'\033[0;31m'
 green=$'\033[0;32m'
@@ -36,7 +38,7 @@ function sourceFileInstall {
     touch ~/$1
   fi
 
-  if ! grep -Fxq "source ~/.eiskrc" ~/$1  > /dev/null; then
+  if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
     echo "source ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
