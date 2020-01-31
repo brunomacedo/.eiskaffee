@@ -38,7 +38,8 @@ function sourceFileInstall {
     touch ~/$1
   fi
 
-  if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
+  # if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
+  if ! command grep -qc 'source ~/.eiskrc' "~/$1"; then
     echo "source ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
