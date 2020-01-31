@@ -33,13 +33,13 @@ if [ ! -f ~/.eiskrc ]; then
   fi
 fi
 
-function sourceFileInstall {
+function __sourceFileInstall {
   if [ ! -f ~/$1 ]; then
     touch ~/$1
   fi
 
   # if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
-  if ! command grep -qc 'source ~/.eiskrc' "~/$1"; then
+  if ! command grep -qc "source ~/.eiskrc" "~/$1" > /dev/null; then
     echo "source ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
@@ -49,8 +49,8 @@ function sourceFileInstall {
   fi
 }
 
-sourceFileInstall .bashrc
-sourceFileInstall .bash_profile
+__sourceFileInstall ".bashrc"
+__sourceFileInstall ".bash_profile"
 
 printf "${green}"
 echo ""
