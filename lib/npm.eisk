@@ -44,4 +44,4 @@ __bump_completion() {
   COMPREPLY=($(compgen -W "$(printf "%q " "${versions[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
-complete -F __bump_completion bump
+# complete -F __bump_completion bump
