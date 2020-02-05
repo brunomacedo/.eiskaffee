@@ -20,8 +20,8 @@ if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
   echo "${red}Removing ~/.eiskrc${end}"
 fi
 
-function sourceFileRemove {
-  if grep -Fxq "source ~/.eiskrc" ~/$1  > /dev/null; then
+function __sourceFileRemove {
+  if grep "source ~/.eiskrc" ~/$1 > /dev/null; then
 
     if [ "$OSTYPE" = "msys" ]; then
       sed -i "/source ~\/.eiskrc/d" ~/$1
@@ -33,7 +33,8 @@ function sourceFileRemove {
   fi
 }
 
-sourceFileRemove .bashrc
-sourceFileRemove .bash_profile
+__sourceFileRemove ".bashrc"
+__sourceFileRemove ".bash_profile"
+__sourceFileRemove ".zshrc"
 
 echo "${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}"

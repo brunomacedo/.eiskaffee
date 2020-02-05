@@ -38,8 +38,7 @@ function __sourceFileInstall {
     touch ~/$1
   fi
 
-  # FIX ON LINUX
-  if ! grep -Fxq "source ~/.eiskrc" ~/$1 > /dev/null; then
+  if ! grep "source ~/.eiskrc" ~/$1 > /dev/null; then
     echo "source ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
@@ -51,6 +50,7 @@ function __sourceFileInstall {
 
 __sourceFileInstall ".bashrc"
 __sourceFileInstall ".bash_profile"
+__sourceFileInstall ".zshrc"
 
 printf "${green}"
 echo ""

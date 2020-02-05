@@ -1,23 +1,71 @@
 #!/bin/bash
 
-function eisk {
+commands_list=("")
+
+function __eisk_usage {
+  printf "\nUsage: eiskaffee ${yellowb}<argument>${end}"
+  printf "\n"
+  printf "\nwhere <argument> is one of:"
+  printf "\n    ${purple}update, uninstall, remove${end}\n"
+}
+
+function eiskaffee {
   local CURRENT_DIR="$PWD"
 
+  if [[ $# -eq 0 ]]; then
+    __eisk_usage
+    return
+  fi
+
   if [ ! -d $EISK_HOME ]; then
-    printf "${redb}Error:${end} Eiskaffee not found."
+    printf "\n${redb}Error:${end} Eiskaffee not found.\n"
     exit 1
   fi
 
-  if [ "$1" = "update" ]; then
-    cd $EISK_HOME
-    if [[ "$(isGitRepo)" = true ]]; then
-      printf "\n${greenb}Updating eiskaffee...${end}\n"
-      git pull
-      cd $CURRENT_DIR
-    fi
-  elif [ "$1" = "uninstall" ] || [ "$1" = "remove" ]; then
-    sh $EISK_HOME/tools/uninstall.sh
-  else
-    printf "\nUsage: eisk ${yellowb}<argument>${end}\n\nwhere <argument> is one of:\n    ${purple}update, uninstall, remove${end}\n"
-  fi
+  case "$1" in
+    update)
+      cd $EISK_HOME
+      if [[ "$(isGitRepo)" = true ]]; then
+        printf "\n${greenb}Updating eiskaffee...${end}\n"
+        git pull
+        cd $CURRENT_DIR
+      fi
+      return
+      ;;
+    uninstall|remove)
+      cd ..
+      sh $EISK_HOME/tools/uninstall.sh
+      return
+      ;;
+   -h|--help)
+      __eisk_usage
+      ;;
+  esac
 }
+
+# COMPLETION
+function __start_eisk {
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  local prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  if (( COMP_CWORD == 1 )); then
+    COMPREPLY=($(compgen -W "--help update uninstall remove" -- "$cur"))
+    return
+  fi
+
+  case "$prev" in
+    -*)
+      return
+      ;;
+    update)
+      COMPREPLY=($(compgen -W "${commands_list[*]}" -- "$cur"))
+      return
+      ;;
+    uninstall|remove)
+      COMPREPLY=($(compgen -W "${commands_list[*]}" -- "$cur"))
+      return
+      ;;
+  esac
+}
+
+complete -F __start_eisk eiskaffee

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set colors to variables
+# SET COLORS TO VARIABLES
 end=$'\033[0m'
 black=$'\033[0;30m'
 blackb=$'\033[1;30m'
