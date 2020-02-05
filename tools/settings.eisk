@@ -5,7 +5,7 @@ commands_list=("")
 function __eisk_usage {
   printf "\nUsage: eiskaffee ${yellowb}<argument>${end}"
   printf "\n"
-  printf "\nwhere <argument> is one of:"
+  printf "\nWhere <argument> is one of:"
   printf "\n    ${purple}update, uninstall, remove${end}\n"
 }
 
