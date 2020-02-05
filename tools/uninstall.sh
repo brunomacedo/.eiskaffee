@@ -6,18 +6,24 @@ green=$'\033[0;32m'
 
 read -r -p "Are you sure you want to remove Eiskaffee? [${green}y/N${end}] " confirmation
 if [ "$confirmation" != y ] && [ "$confirmation" != Y ]; then
-  echo "${red}Uninstall cancelled.${end}"
+  printf "${red}"
+  echo "Uninstall cancelled."
+  printf "${end}"
   exit
 fi
 
 if [ -d ~/.eiskaffee ]; then
-  echo "${red}Removing ~/.eiskaffee${end}"
+  printf "${red}"
+  echo "Removing ~/.eiskaffee"
+  printf "${end}"
   rm -rf ~/.eiskaffee
 fi
 
 if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
   rm ~/.eiskrc
-  echo "${red}Removing ~/.eiskrc${end}"
+  printf "${red}"
+  echo "Removing ~/.eiskrc"
+  printf "${end}"
 fi
 
 function __sourceFileRemove {
@@ -29,7 +35,9 @@ function __sourceFileRemove {
       sed -i "" "/source ~\/.eiskrc/d" ~/$1
     fi
 
-    echo "Removing line ${red}~/.eiskrc${end} from ~/$1"
+    echo ""
+    printf "Removing line ${red}~/.eiskrc${end} from ~/$1"
+    echo ""
   fi
 }
 
@@ -37,4 +45,4 @@ __sourceFileRemove ".bashrc"
 __sourceFileRemove ".bash_profile"
 __sourceFileRemove ".zshrc"
 
-echo "${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}"
+printf "${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}"
