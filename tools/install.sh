@@ -7,7 +7,9 @@ green=$'\033[0;32m'
 REPOSITORY="https://github.com/brunomacedo/.eiskaffee.git"
 
 command -v git >/dev/null 2>&1 || {
+  printf "${red}"
   echo "Error: git is not installed"
+  printf "${end}"
   exit 1
 }
 
@@ -39,7 +41,7 @@ function __sourceFileInstall {
   fi
 
   if ! grep "source ~/.eiskrc" ~/$1 > /dev/null; then
-    echo "source ~/.eiskrc" >> ~/$1
+    printf "\nsource ~/.eiskrc" >> ~/$1
   else
     printf "${red}"
     printf "You'll need to remove $EISK_HOME if you want to re-install.\n"
