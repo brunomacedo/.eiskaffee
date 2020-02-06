@@ -24,7 +24,7 @@ Restart your terminal. =D
 ## Update
 
 ```bash
-eisk update
+eiskaffee update
 ```
 
 
@@ -45,6 +45,14 @@ After that you should insert this line `source ~/.eiskrc` on it.
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/uninstall.sh)"
 ```
+
+OR
+
+```bash
+eiskaffee uninstall
+```
+
+and then
 
 ```bash
 source ~/.bash_profile
