@@ -13,17 +13,13 @@ if [ "$confirmation" != y ] && [ "$confirmation" != Y ]; then
 fi
 
 if [ -d ~/.eiskaffee ]; then
-  printf "${red}"
   echo "Removing ~/.eiskaffee"
-  printf "${end}"
   rm -rf ~/.eiskaffee
 fi
 
 if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
   rm ~/.eiskrc
-  printf "${red}"
   echo "Removing ~/.eiskrc"
-  printf "${end}"
 fi
 
 function __sourceFileRemove {
@@ -35,9 +31,7 @@ function __sourceFileRemove {
       sed -i "" "/source ~\/.eiskrc/d" ~/$1
     fi
 
-    echo ""
-    printf "Removing line ${red}~/.eiskrc${end} from ~/$1"
-    echo ""
+    printf "Removing line ${red}~/.eiskrc${end} from ~/$1\n"
   fi
 }
 
@@ -45,4 +39,4 @@ __sourceFileRemove ".bashrc"
 __sourceFileRemove ".bash_profile"
 __sourceFileRemove ".zshrc"
 
-printf "${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}"
+printf "\n${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}\n"
