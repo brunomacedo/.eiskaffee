@@ -1,5 +1,10 @@
 #!/bin/bash
 
+__command_exists git || {
+  echo "git is not installed."
+  return
+}
+
 # Git get the current branch
 function getCurrentBranch {
   local ref

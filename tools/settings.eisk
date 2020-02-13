@@ -2,6 +2,10 @@
 
 commands_list=("")
 
+function __command_exists {
+  command -v "$@" >/dev/null 2>&1
+}
+
 function __eisk_usage {
   printf "\nUsage: eiskaffee ${yellowb}<argument>${end}"
   printf "\n"
@@ -67,5 +71,7 @@ function __start_eisk {
       ;;
   esac
 }
+
+__command_exists complete || return
 
 complete -F __start_eisk eiskaffee
