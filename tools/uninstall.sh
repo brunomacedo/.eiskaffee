@@ -1,25 +1,24 @@
 #!/bin/bash
 
 end=$'\033[0m'
-red=$'\033[0;31m'
+redb=$'\033[1;31m'
 green=$'\033[0;32m'
+blue=$'\033[0;34m'
 
-read -r -p "Are you sure you want to remove Eiskaffee? [${green}y/N${end}] " confirmation
+read -r -p $'\n'"Are you sure you want to remove Eiskaffee? [${green}y/N${end}] " confirmation
 if [ "$confirmation" != y ] && [ "$confirmation" != Y ]; then
-  printf "${red}"
-  echo "Uninstall cancelled."
-  printf "${end}"
+  printf "\n${redb}Uninstall cancelled.${end}\n"
   exit
 fi
 
 if [ -d ~/.eiskaffee ]; then
-  echo "Removing ~/.eiskaffee"
+  printf "\nRemoving ${redb}~/.eiskaffee${end}\n"
   rm -rf ~/.eiskaffee
 fi
 
 if [ -f ~/.eiskrc ] || [ -h ~/.eiskrc ]; then
+  printf "Removing ${redb}~/.eiskrc${end}"
   rm ~/.eiskrc
-  echo "Removing ~/.eiskrc"
 fi
 
 function __sourceFileRemove {
@@ -31,7 +30,7 @@ function __sourceFileRemove {
       sed -i "" "/source ~\/.eiskrc/d" ~/$1
     fi
 
-    printf "Removing line ${red}~/.eiskrc${end} from ~/$1\n"
+    printf "\nRemoving line ${redb}~/.eiskrc${end} from ${blue}~/$1${end}"
   fi
 }
 
@@ -39,4 +38,4 @@ __sourceFileRemove ".bashrc"
 __sourceFileRemove ".bash_profile"
 __sourceFileRemove ".zshrc"
 
-printf "\n${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}\n"
+printf "\n\n${green}Thanks for trying out Eiskaffee. It's been uninstalled.${end}\n"
