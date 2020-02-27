@@ -51,3 +51,23 @@ function deleteFile {
     echo "Usage: deleteFile <path> <file>"
   fi
 }
+
+function listAll {
+  if [ -z $1 ] || [ -z $2 ]; then
+    __listAll_usage
+    return
+  fi
+
+  find ${1} -type ${2} -name "*${3}"
+}
+
+function __listAll_usage {
+  echo -e """
+    Usage:   listAll ${yellowb}<path> <type> <extension/file>${end}
+    Where:
+
+      ${greenb}<path>${end}           : . (currrent path)
+      ${greenb}<type>${end}           : d (directory), f (file)
+      ${greenb}<extension/file>${end} : optional
+  """
+}
