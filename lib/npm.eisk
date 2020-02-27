@@ -1,5 +1,10 @@
 #!/bin/bash
 
+__command_exists npm || {
+  echo "npm is not installed."
+  return
+}
+
 # Update package version
 # Usage: bump <version>
 # where <version> is one of:
@@ -44,4 +49,6 @@ function __bump_completion {
   COMPREPLY=($(compgen -W "$(printf "%q " "${versions[@]}")" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
-# complete -F __bump_completion bump
+__command_exists complete || return
+
+complete -F __bump_completion bump

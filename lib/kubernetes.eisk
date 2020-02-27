@@ -1,7 +1,7 @@
 #!/bin/bash
 
-command -v kubectl >/dev/null 2>&1 || {
-  echo "Error: kubectl is not installed."
+__command_exists kubectl || {
+  echo "kubernetes is not installed."
   return
 }
 
@@ -124,5 +124,7 @@ function __get_all_contexts {
 function __start_k8s {
   __get_all_contexts
 }
+
+__command_exists complete || return
 
 complete -F __start_k8s k8s
