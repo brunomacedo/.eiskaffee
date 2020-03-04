@@ -66,14 +66,15 @@ function __k8s_login {
     return
   fi
 
-  read -r -p "Username: " username
+  printf "${yellowb}Username: ${end}"
+  read username
   if [ -z "$username" ]; then
     echo "Username required."
     return
   fi
 
-  read -r -s -p "Password: " password
-  echo
+  printf "${yellowb}Password: ${end}"
+  read -rs password
   if [ -z "$password" ]; then
     echo "Password required."
     return
