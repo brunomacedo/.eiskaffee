@@ -6,7 +6,9 @@ __command_exists kubectl || {
 }
 
 COMPREPLY=()
-kubectl_out=($(kubectl config get-clusters | grep "intranet"))
+kubectl_namespaces=($(kubectl get namespaces -o name | cut -d "/" -f 2))
+kubectl_contexts=($(kubectl config get-contexts -o name))
+kubectl_clusters=($(kubectl config get-clusters | grep "intranet"))
 auth_url=""
 auth_action=""
 username=""
@@ -14,11 +16,11 @@ password=""
 
 function __k8s_usage {
   echo ""
-  echo "     Usage:   k8s login ${yellowb}<environment>${end}"
+  echo "     Usage: k8s login ${yellowb}<environment>${end}"
   echo ""
   echo "     Where ${yellowb}<environment>${end} is one of:"
   echo ""
-  for k8s_context in "${kubectl_out[@]}"; do
+  for k8s_context in "${kubectl_clusters[@]}"; do
     echo "       ${greenb}->${end} ${k8s_context}"
   done
   echo ""
@@ -66,21 +68,43 @@ function __k8s_login {
     return
   fi
 
-  printf "${yellowb}Username: ${end}"
-  read username
-  if [ -z "$username" ]; then
-    echo "Username required."
+  if [[ ! -z $(printf '%s\n' "${kubectl_clusters[@]}" | grep -w "$1") ]]; then
+    printf "${yellowb}Username: ${end}"
+    read username
+    if [ -z "$username" ]; then
+      echo "Username required."
+      return
+    fi
+
+    printf "${yellowb}Password: ${end}"
+    read -rs password
+    if [ -z "$password" ]; then
+      echo "Password required."
+      return
+    fi
+
+    _login_k8s_uol "$1"
+  else
+    printf "\n  Cluster ${redb}${1}${end} not found or doesn´t exists.\n"
+  fi
+}
+
+function __k8s_set_namespace {
+  if [ -z $1 ]; then
+    __k8s_usage
     return
   fi
 
-  printf "${yellowb}Password: ${end}"
-  read -rs password
-  if [ -z "$password" ]; then
-    echo "Password required."
-    return
+  if [[ ! -z $(printf '%s\n' "${kubectl_namespaces[@]}" | grep -w "$1") ]]; then
+    local SET_ALL;
+    printf "\nSet namespace ${yellowb}$1${end} in all contexts:\n\n"
+    for k8s_context in "${kubectl_contexts[@]}"; do
+      echo "  ${greenb}->${end} ${k8s_context}"
+      SET_ALL=$(kubectl config set-context $k8s_context --namespace=$1)
+    done
+  else
+    printf "\n  Namespace ${redb}${1}${end} not found or doesn´t exists.\n"
   fi
-
-  _login_k8s_uol "$1"
 }
 
 function k8s {
@@ -90,11 +114,15 @@ function k8s {
   fi
 
   case "$1" in
-   login)
-      __k8s_login "$2"
-      return 0
+    set-namespace)
+      __k8s_set_namespace "$2"
+      return
       ;;
-   -h|--help)
+    login)
+      __k8s_login "$2"
+      return
+      ;;
+    -h|--help)
       __k8s_usage
       ;;
   esac
@@ -107,7 +135,7 @@ function __get_all_contexts {
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
   if (( COMP_CWORD == 1 )); then
-    COMPREPLY=($(compgen -W "--help login" -- "$cur"))
+    COMPREPLY=($(compgen -W "--help login set-namespace" -- "$cur"))
     return
   fi
 
@@ -115,8 +143,12 @@ function __get_all_contexts {
     -*)
       return
       ;;
+    set-namespace)
+      COMPREPLY=($(compgen -W "${kubectl_namespaces[*]}" -- "$cur"))
+      return
+      ;;
     login)
-      COMPREPLY=($(compgen -W "${kubectl_out[*]}" -- "$cur"))
+      COMPREPLY=($(compgen -W "${kubectl_clusters[*]}" -- "$cur"))
       return
       ;;
   esac
