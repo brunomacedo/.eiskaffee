@@ -14,7 +14,7 @@ auth_action=""
 username=""
 password=""
 
-function __k8s_usage {
+__k8s_usage() {
   echo ""
   echo "     Usage: k8s login ${yellowb}<environment>${end}"
   echo ""
@@ -28,7 +28,7 @@ function __k8s_usage {
   echo ""
 }
 
-function __get_auth_action_k8s_uol {
+__get_auth_action_k8s_uol() {
   local response=$(curl --write-out "HTTPSTATUS:%{http_code}" -s -k -L --insecure "$auth_url")
   local http_status=$(echo "$response" | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]{3})$/\1/')
   echo
@@ -40,7 +40,7 @@ function __get_auth_action_k8s_uol {
   fi
 }
 
-function _login_k8s_uol {
+_login_k8s_uol() {
   base_url="https://auth.kube-system.svc.cluster.$1"
   auth_url="https://login.kube-system.svc.cluster.$1/auth"
 
@@ -62,7 +62,7 @@ function _login_k8s_uol {
   fi
 }
 
-function __k8s_login {
+__k8s_login() {
   if [ -z $1 ]; then
     __k8s_usage
     return
@@ -89,7 +89,7 @@ function __k8s_login {
   fi
 }
 
-function __k8s_set_namespace {
+__k8s_set_namespace() {
   if [ -z $1 ]; then
     __k8s_usage
     return
@@ -107,7 +107,7 @@ function __k8s_set_namespace {
   fi
 }
 
-function k8s {
+k8s() {
   if [[ $# -eq 0 ]]; then
     __k8s_usage
     return
@@ -130,7 +130,7 @@ function k8s {
 
 # COMPLETION
 # bash completion for extends k8s
-function __get_all_contexts {
+__get_all_contexts() {
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
@@ -154,7 +154,7 @@ function __get_all_contexts {
   esac
 }
 
-function __start_k8s {
+__start_k8s() {
   __get_all_contexts
 }
 

@@ -2,18 +2,18 @@
 
 commands_list=("")
 
-function __command_exists {
+__command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
 
-function __eisk_usage {
+__eisk_usage() {
   printf "\nUsage: eiskaffee ${yellowb}<argument>${end}"
   printf "\n"
   printf "\nWhere <argument> is one of:"
   printf "\n    ${purple}update, uninstall, remove${end}\n"
 }
 
-function eiskaffee {
+eiskaffee() {
   local CURRENT_DIR="$PWD"
 
   if [[ $# -eq 0 ]]; then
@@ -48,7 +48,7 @@ function eiskaffee {
 }
 
 # COMPLETION
-function __start_eisk {
+__start_eisk() {
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 

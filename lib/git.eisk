@@ -6,7 +6,7 @@ __command_exists git || {
 }
 
 # Git get the current branch
-function getCurrentBranch {
+getCurrentBranch() {
   local ref
   ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
   local ret=$?
@@ -18,7 +18,7 @@ function getCurrentBranch {
 }
 
 # Verify if local repository exists
-function isGitRepo {
+isGitRepo() {
   local GET_REPO=true
   if [[ ! -d ".git" ]]; then
     echo -e "${redb}No such repository (.git).${end}"
@@ -30,7 +30,7 @@ function isGitRepo {
 }
 
 # Verify if there is a remote repository
-function isRemoteGitPull {
+isRemoteGitPull() {
   local CURRENT_BRANCH="$(getCurrentBranch)"
   if [[ -n "$(command git show-ref origin/${CURRENT_BRANCH} 2> /dev/null)" ]]; then
     pull
@@ -40,7 +40,7 @@ function isRemoteGitPull {
 }
 
 # Git update [pull] multiple repositories
-function update {
+update() {
   OLDIFS=""
   IFS=$'\n'
 
@@ -73,7 +73,7 @@ function update {
 }
 
 # Update [pull] any repositories
-function upis {
+upis() {
   local CURRENT_DIR="$PWD"
   cd "$1"
   update
@@ -84,7 +84,7 @@ function upis {
 # Usage: logs <number> <user_name:optional>
 # where <number> is one of:
 #     1 ... ~
-function logs {
+logs() {
   if [[ "$(isGitRepo)" = true ]]; then
     if [ "$1" ] && [ "$2" ]; then
       git log --pretty=format:"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s" --date-order -n "$1" --date=short --author="$2"
@@ -101,7 +101,7 @@ function logs {
 }
 
 # Verify if there are files to versioned
-function changes {
+changes() {
   local changed=false
   if [[ -n "$(command git status --porcelain)" ]]; then
     changed=true
@@ -110,7 +110,7 @@ function changes {
 }
 
 # Ask if you'd like to commit changes
-function gcommit {
+gcommit() {
   if [[ "$(isGitRepo)" = true ]]; then
     local getChange="$(changes)"
 
@@ -143,7 +143,7 @@ function gcommit {
 # Usage: cplist <folder> <commit_hash:optional>
 #     Example: cplist ~/Desktop/myfolder
 #     Example: cplist ~/Desktop/myfolder 8c0902
-function cplist {
+cplist() {
   if [ ! -d $1 ]; then
     mkdir -p $1
   fi
@@ -188,6 +188,6 @@ function cplist {
 # Copy files with all parents folders
 # Usage: copied <file> <destine>
 #     Example: copied ~/Desktop/myfolder
-function copied {
+copied() {
   cp --parents $1 $2
 }

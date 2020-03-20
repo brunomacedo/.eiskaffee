@@ -4,7 +4,7 @@
 # Usage: rename <command>
 # where <command> is one of:
 #     all, dirs, folders, files
-function rename {
+rename() {
   OLDIFS=""
   IFS=$'\n'
   local files=()
@@ -54,7 +54,7 @@ function rename {
 
 # Map of characters
 # Usage: replace_characters "Açãí fruit"
-function replace_characters {
+replace_characters() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | \
     sed "s/[áàâãä@]/a/g; \
         s/[éèêë&]/e/g; \
@@ -72,7 +72,7 @@ function replace_characters {
 
 # Trim spaces of string
 # Usage: trim_string "   example   string    "
-function trim_string {
+trim_string() {
   : "${1#"${1%%[![:space:]]*}"}"
   : "${_%"${_##*[![:space:]]}"}"
   printf '%s\n' "$_"

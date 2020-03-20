@@ -12,7 +12,7 @@ sagui="/c/App/projects/sagui"
 clubeuol="/c/App/projects/clubeuol"
 contabilidade="/c/App/projects/contabilidade"
 
-function upall {
+upall() {
   upis $sagui
   upis $clubeuol
   upis $contabilidade
@@ -21,22 +21,22 @@ function upall {
   upis $templates_folder
 }
 
-function run {
+run() {
   www
   sh run.sh 80 443
 }
 
-function open {
+open() {
   www
   gulp open $1
 }
 
-function dev {
+dev() {
   www
   gulp dev $1
 }
 
-function hosts {
+hosts() {
   if [ "$1" != "" ] && [ "$1" ]; then
     cp /c/Windows/System32/drivers/etc/$1 /c/Windows/System32/drivers/etc/hosts
   else
@@ -44,7 +44,7 @@ function hosts {
   fi
 }
 
-function deleteFile {
+deleteFile() {
   if [ "$1" != "" ] && [ "$1" ]; then
     find $1 -name "$2" -delete
   else
@@ -52,7 +52,7 @@ function deleteFile {
   fi
 }
 
-function listAll {
+listAll() {
   if [ -z $1 ] || [ -z $2 ]; then
     __listAll_usage
     return
@@ -61,7 +61,7 @@ function listAll {
   find ${1} -type ${2} -name "*${3}"
 }
 
-function __listAll_usage {
+__listAll_usage() {
   echo -e """
     Usage:   listAll ${yellowb}<path> <type> <extension/file>${end}
     Where:

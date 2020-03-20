@@ -1,8 +1,8 @@
 #!/bin/bash
 
-end=$'\033[0m'
-red=$'\033[0;31m'
-green=$'\033[0;32m'
+end='\033[0m'
+red='\033[0;31m'
+green='\033[0;32m'
 
 REPOSITORY="https://github.com/brunomacedo/.eiskaffee.git"
 
@@ -24,6 +24,23 @@ if [ ! -d $EISK_HOME ]; then
   }
 fi
 
+__sourceFileInstall() {
+  if [ ! -f ~/$1 ]; then
+    touch ~/$1
+  fi
+
+  if grep -q "source ~/.eiskaffee" ~/$1
+  then
+    printf "${red}"
+    printf "You'll need to remove $EISK_HOME if you want to re-install.\n"
+    printf "${end}"
+    return
+  fi
+
+  printf "\nsource ~/.eiskrc" >> ~/$1
+  return
+}
+
 if [ ! -f ~/.eiskrc ]; then
   if [ -f $EISK_HOME/templates/.eiskrc ]; then
     cp $EISK_HOME/templates/.eiskrc ~/.eiskrc
@@ -34,21 +51,6 @@ if [ ! -f ~/.eiskrc ]; then
     exit 1
   fi
 fi
-
-function __sourceFileInstall {
-  if [ ! -f ~/$1 ]; then
-    touch ~/$1
-  fi
-
-  if ! grep "source ~/.eiskrc" ~/$1 > /dev/null; then
-    printf "\nsource ~/.eiskrc" >> ~/$1
-  else
-    printf "${red}"
-    printf "You'll need to remove $EISK_HOME if you want to re-install.\n"
-    printf "${end}"
-    exit 1
-  fi
-}
 
 __sourceFileInstall ".bashrc"
 __sourceFileInstall ".bash_profile"
@@ -64,6 +66,7 @@ echo "▒▓█  ▄ ░██░  ▒   ██▒▓██ █▄░██▄�
 echo "░▒████▒░██░▒██████▒▒▒██▒ █▄▓█   ▓██▒░▒█░   ░▒█░    ░▒████▒░▒████▒";
 echo "░░ ▒░ ░░▓  ▒ ▒▓▒ ▒ ░▒ ▒▒ ▓▒▒▒   ▓▒█░ ▒ ░    ▒ ░    ░░ ▒░ ░░░ ▒░ ░";
 echo "                                                                 ";
-echo "Check this repository: $REPOSITORY"
+echo "Author: Bruno Macedo"
+echo "Repository: $REPOSITORY"
 echo ""
 printf "${end}"

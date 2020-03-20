@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function getSystemOS {
+getSystemOS() {
   case "$OSTYPE" in
     linux*)   echo "Linux" ;;
     darwin*)  echo "Mac" ;;

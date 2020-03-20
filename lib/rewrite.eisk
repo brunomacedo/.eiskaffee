@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Copy a file from template and replace a string inside it
-function rewriteFile {
+rewriteFile() {
   if [ "$1" != "" ] && [ "$1" ]; then
     OLDIFS=$IFS
     IFS=$'\n'
@@ -86,15 +86,15 @@ function rewriteFile {
 #     <find_string>:  "EXAMPLE"
 #     <replace_to> :  "NEWEXAMPLE"
 #     <search_file>:  ~/Desktop/path
-function replaceStringIntoFile {
+replaceStringIntoFile() {
   sed -i -e 's,'"$1"','"$2"',g' $3
 }
 
-function forceCreateFile {
+forceCreateFile() {
   mkdir -p "$(dirname "$1")" || return; touch "$1"
 }
 
-function checkFileOrDiretory {
+checkFileOrDiretory() {
   local ISTRAILINGSLASH=$(echo $1 | sed 's/\/$//g')
   local ISFILE=$(printf '%s\n' "${ISTRAILINGSLASH##*/}")
 
@@ -108,12 +108,12 @@ function checkFileOrDiretory {
 # Check status code from an url
 # Usage: checkStatusCode https://brunomacedo.com.br
 # Terminal: 200
-function checkStatusCode {
+checkStatusCode() {
   STATUS_CODE=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$1")
   echo $STATUS_CODE
 }
 
-function removeParamsFromURL {
+removeParamsFromURL() {
   local REPLACE=$(echo $1 | cut -d "?" -f 1 | cut -d "#" -f 1)
   echo "$REPLACE"
 }
