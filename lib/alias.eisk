@@ -14,7 +14,7 @@ alias cherry='git cherry -v'
 alias add='git add'
 alias hfix='history -n && history | sort -k2 -k1nr | uniq -f1 | sort -n | cut -c8- > ~/.tmp$$ && history -c && history -r ~/.tmp$$ && history -w && rm ~/.tmp$$'
 alias showRemote='git config --get remote.origin.url'
-alias kball='kubectl get svc,pvc,netpol,deploy,pod,secrets,configmap'
+alias kball='kubectl get svc,pvc,netpol,deploy,pod,configmap'
 
 if [ $(getSystemOS) = "Msys" ]; then
   alias vscode='"$HOME/AppData/Local/Programs/Microsoft VS Code/Code.exe"'
