@@ -1,4 +1,4 @@
-# IMPORTS
+# IMPORT FILES
 source $EISK_HOME/tools/settings.eisk
 source $EISK_HOME/tools/system.eisk
 source $EISK_HOME/lib/colors.eisk
