@@ -13,7 +13,7 @@ Some functions in my `bash_profile` for developers `bash --version > 4.0`
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
 ```
 
-And restart your terminal. =D
+and then restart your terminal. =D
 
 
 ## Update
