@@ -28,7 +28,7 @@ __k8s_usage() {
   echo ""
 }
 
-__get_auth_action_k8s_uol() {
+__get_auth_action_k8s() {
   local response=$(curl --write-out "HTTPSTATUS:%{http_code}" -s -k -L --insecure "$auth_url")
   local http_status=$(echo "$response" | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]{3})$/\1/')
   echo
@@ -40,11 +40,11 @@ __get_auth_action_k8s_uol() {
   fi
 }
 
-_login_k8s_uol() {
+_login_k8s() {
   base_url="https://auth.kube-system.svc.cluster.$1"
   auth_url="https://login.kube-system.svc.cluster.$1/auth"
 
-  __get_auth_action_k8s_uol
+  __get_auth_action_k8s
 
   local login_url="$base_url$auth_action"
   local login_result=$(curl --write-out "HTTPSTATUS:%{http_code}" -s -k -L --insecure "$login_url" --data 'login='"$username"'&password='"$password"'')
@@ -83,7 +83,7 @@ __k8s_login() {
       return
     fi
 
-    _login_k8s_uol "$1"
+    _login_k8s "$1"
   else
     printf "\n  Cluster ${redb}${1}${end} not found or doesn´t exists.\n"
   fi
