@@ -99,7 +99,7 @@ __k8s_set_namespace() {
     local SET_ALL;
     printf "\nSet namespace ${yellowb}$1${end} in all contexts:\n\n"
     for k8s_context in "${kubectl_contexts[@]}"; do
-      echo "  ${greenb}->${end} ${k8s_context}"
+      printf "  ${greenb}->${end} ${k8s_context}\n"
       SET_ALL=$(kubectl config set-context $k8s_context --namespace=$1)
     done
   else
