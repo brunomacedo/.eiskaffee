@@ -13,13 +13,8 @@ Some functions in my `bash_profile` for developers `bash --version > 4.0`
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/install.sh)"
 ```
 
-```bash
-source ~/.bash_profile
-```
+And restart your terminal. =D
 
-OR
-
-Restart your terminal. =D
 
 ## Update
 
@@ -43,24 +38,10 @@ After that you should insert this line `source ~/.eiskrc` on it.
 ## Uninstall
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/brunomacedo/.eiskaffee/master/tools/uninstall.sh)"
-```
-
-OR
-
-```bash
 eiskaffee uninstall
 ```
 
-and then
-
-```bash
-source ~/.bash_profile
-```
-
-OR
-
-Restart your terminal. =D
+and then restart your terminal. =D
 
 
 # Anotations
