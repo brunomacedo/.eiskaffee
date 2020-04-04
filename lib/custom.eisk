@@ -36,14 +36,6 @@ dev() {
   gulp dev $1
 }
 
-hosts() {
-  if [ "$1" != "" ] && [ "$1" ]; then
-    cp /c/Windows/System32/drivers/etc/$1 /c/Windows/System32/drivers/etc/hosts
-  else
-    code /c/Windows/System32/drivers/etc/hosts
-  fi
-}
-
 deleteFile() {
   if [ "$1" != "" ] && [ "$1" ]; then
     find $1 -name "$2" -delete

@@ -13,3 +13,23 @@ disableCors() {
     google-chrome --disable-web-security
   fi
 }
+
+hosts() {
+  local FIND_HOSTS
+
+  case "$OSTYPE" in
+    msys*)
+      FIND_HOSTS="/c/Windows/System32/drivers/etc"
+    ;;
+    *)
+      FIND_HOSTS="/etc"
+    ;;
+  esac
+
+  if [ -z $1 ]; then
+    code "$FIND_HOSTS/hosts"
+    return
+  fi
+
+  cp "$FIND_HOSTS/$1" "$FIND_HOSTS/hosts"
+}
