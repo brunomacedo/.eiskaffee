@@ -55,7 +55,7 @@ _login_k8s() {
     return
   else
     if echo "$login_result" | grep -q "login-error"; then
-      printf "\n   ${yellowb}Invalid Username and/or Password.${end}"
+      printf "\n   ${yellowb}Invalid Username and/or Password.${end}\n"
     else
       echo "$login_result" | sed -nr 's/.*data-clipboard-text="([^"]+)".*/\1/p' | bash
     fi
@@ -68,19 +68,28 @@ __k8s_login() {
     return
   fi
 
+  username="${K8S_CREDENTIALS[username]}"
+  password="${K8S_CREDENTIALS[password]}"
+
   if [[ ! -z $(printf '%s\n' "${kubectl_clusters[@]}" | grep -w "$1") ]]; then
-    printf "${yellowb}Username: ${end}"
-    read username
-    if [ -z "$username" ]; then
-      echo "Username required."
-      return
+    if [[ -z "${K8S_CREDENTIALS[username]}" ]]; then
+      printf "${yellowb}Username: ${end}"
+      read username
+
+      if [ -z "$username" ]; then
+        echo "Username required."
+        return
+      fi
     fi
 
-    printf "${yellowb}Password: ${end}"
-    read -rs password
-    if [ -z "$password" ]; then
-      echo "Password required."
-      return
+    if [[ -z "${K8S_CREDENTIALS[password]}" ]]; then
+      printf "${yellowb}Password: ${end}"
+      read -rs password
+
+      if [ -z "$password" ]; then
+        echo "Password required."
+        return
+      fi
     fi
 
     _login_k8s "$1"
