@@ -185,7 +185,7 @@ cplist() {
   fi
 }
 
-git-remote() {
+gitRemote() {
   if [[ $# -eq 0 ]]; then
     echo "Need arguments."
     return
