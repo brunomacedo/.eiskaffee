@@ -1,25 +1,6 @@
 #!/bin/bash
 
 alias kubectl=kubectl
-alias www='cd /c/App/www'
-alias templates='cd /c/App/www/templates'
-
-uolp="/c/App/projects"
-apache_folder="/c/App/www/apache"
-templates_folder="/c/App/www/templates"
-
-sagui="/c/App/projects/sagui"
-clubeuol="/c/App/projects/clubeuol"
-contabilidade="/c/App/projects/contabilidade"
-
-upall() {
-  upis $sagui
-  upis $clubeuol
-  upis $contabilidade
-  upis $uolp
-  upis $apache_folder
-  upis $templates_folder
-}
 
 run() {
   www
