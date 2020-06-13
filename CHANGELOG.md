@@ -1,3 +1,28 @@
+# [6.2.0](https://github.com/brunomacedo/.eiskaffee/compare/v6.0.0...v6.2.0) (2020-06-13)
+
+
+### Bug Fixes
+
+* colors on set-namespace log ([6e9c7a9](https://github.com/brunomacedo/.eiskaffee/commit/6e9c7a972670351c4bf7ecedfff53c8168c225ea))
+* remove old vscode alias ([1dd05b4](https://github.com/brunomacedo/.eiskaffee/commit/1dd05b478446c2c5b138c0bf732078938d0b3d32))
+* remove paths ([3509824](https://github.com/brunomacedo/.eiskaffee/commit/350982433f2e4f81441edf6214c2ef5062719356))
+* travis test rename function ([fd46a5a](https://github.com/brunomacedo/.eiskaffee/commit/fd46a5abbe34aea64c05a674c43f2dff3e761ade))
+
+
+### Features
+
+* add alias get all in kubectl ([ad46f44](https://github.com/brunomacedo/.eiskaffee/commit/ad46f443b936149516d5211fded3ca05ce14ca11))
+* add alias get all kubectl ([dee4c96](https://github.com/brunomacedo/.eiskaffee/commit/dee4c965435133a8c3ed82f668fc477b1acc8f81))
+* add open and change hosts file ([8ed054b](https://github.com/brunomacedo/.eiskaffee/commit/8ed054b2e81192366a90c9c2c6657bc000ae8059))
+* create auto update with confirm ([ab4851d](https://github.com/brunomacedo/.eiskaffee/commit/ab4851d0357cd3c08d60bb0f7ddbb744e5d5984e))
+* create auto update with confirm ([8257eb6](https://github.com/brunomacedo/.eiskaffee/commit/8257eb60ed8abb051d8b0b095b683738a6be9f2c))
+* default credentials k8s ([6c587b6](https://github.com/brunomacedo/.eiskaffee/commit/6c587b60387df4107519ffac3507eb9792c6b020))
+* remove flags ([c19a294](https://github.com/brunomacedo/.eiskaffee/commit/c19a294faff4821ad543d8984c689af6f3ebad01))
+* remove remote branch ([b661f25](https://github.com/brunomacedo/.eiskaffee/commit/b661f2573e33656afb6d9117dbdaa392ababeab8))
+* update import files ([db9cf78](https://github.com/brunomacedo/.eiskaffee/commit/db9cf78bc51b3cd6dbf041d1ef22fe173265705e))
+
+
+
 # [6.0.0](https://github.com/brunomacedo/.eiskaffee/compare/v5.5.0...v6.0.0) (2020-03-20)
 
 
