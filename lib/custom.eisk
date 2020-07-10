@@ -8,7 +8,7 @@ run() {
 }
 
 open() {
-  www
+  cd /c/App/www/apache/gulp-automacao
   gulp open $1
 }
 
