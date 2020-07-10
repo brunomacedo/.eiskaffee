@@ -13,7 +13,7 @@ open() {
 }
 
 dev() {
-  www
+  cd /c/App/www/apache/gulp-automacao
   gulp dev $1
 }
 
