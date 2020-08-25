@@ -36,7 +36,7 @@ __get_auth_action_k8s() {
     printf "\n${greenb}Failed to connect:${end} $auth_url"
     return
   else
-    auth_action=$(echo $response | sed -nr 's/.*action="([^"]+)".*/\1/p')
+    auth_action=$(echo $response | sed -E -n 's/.*action="([^"]+)".*/\1/p')
   fi
 }
 
