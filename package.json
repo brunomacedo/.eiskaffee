@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/brunomacedo/.eiskaffee/issues"
   },
-  "homepage": "https://github.com/brunomacedo/.eiskaffee#readme"
+  "homepage": "https://github.com/brunomacedo/.eiskaffee#readme",
+  "dependencies": {
+    "conventional-changelog-cli": "^2.1.0"
+  }
 }
