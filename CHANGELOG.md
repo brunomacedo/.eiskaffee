@@ -1,3 +1,19 @@
+# [6.3.0](https://github.com/brunomacedo/.eiskaffee/compare/v6.2.0...v6.3.0) (2020-10-14)
+
+
+### Bug Fixes
+
+* gulp path when starts ([64565be](https://github.com/brunomacedo/.eiskaffee/commit/64565be20c0f2e2a1b8e0a3c02e986a734f73a7d))
+* gulpfile find path script ([18fa209](https://github.com/brunomacedo/.eiskaffee/commit/18fa209d84af6effc471c773ec81a73c2be216e6))
+* sed parameter enable to work on mac os ([6f95fd5](https://github.com/brunomacedo/.eiskaffee/commit/6f95fd5231a3dee6e5f61ee7eb883223a1f08df3))
+
+
+### Features
+
+* git create folder zip by branch ([c936cf4](https://github.com/brunomacedo/.eiskaffee/commit/c936cf4f2995f2c0e99d0553d76945eff4c13fbb))
+
+
+
 # [6.2.0](https://github.com/brunomacedo/.eiskaffee/compare/v6.0.0...v6.2.0) (2020-06-13)
 
 
