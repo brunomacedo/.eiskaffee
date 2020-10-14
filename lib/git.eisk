@@ -206,3 +206,20 @@ gitRemote() {
 copied() {
   cp --parents $1 $2
 }
+
+# Zip folder repository
+# Usage: gitZip <destine/file-name> <branch:optional (master=default)>
+#     Example: gitZip ~/Desktop/myRepository
+gitZip() {
+  if [[ $# -eq 0 ]]; then
+    echo "Need arguments."
+    return
+  fi
+
+  local branch="master"
+  if [ "$2" ]; then
+    local branch="$2"
+  fi
+
+  git archive --format zip --output "$1.zip" $branch
+}
