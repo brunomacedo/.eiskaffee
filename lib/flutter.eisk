@@ -1,0 +1,116 @@
+#!/bin/bash
+
+set -e
+
+end='\033[0m'
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+blue='\033[0;34m'
+purple='\033[0;35m'
+
+if [ -z $1 ]; then
+  echo ""
+  printf "Usage: sh deploy ${yellow}<version>${end}"
+  echo ""
+  echo "where <version> is one of:"
+  printf "\n    ${green}major, minor, patch${end}"
+  echo ""
+  exit 1
+fi
+
+# EMPTY LINE
+echo
+
+command -v git >/dev/null 2>&1 || {
+  echo -e "Error: git is not installed.${end}"
+  exit 1
+}
+
+command -v flutter >/dev/null 2>&1 || {
+  echo -e "${red}Flutter não instalado.${end}"
+  exit 1
+}
+
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
+  printf "${yellow}You should be on branch origin/master, try:${end}\n\n"
+  echo "   git checkout master"
+  exit 1
+fi
+
+__update_version() {
+  local SEM_VERSION="$(__get_version | cut -d+ -f1)"
+  local BUILD_VERSION="$(__get_version | cut -d+ -f2)"
+  local INCREMENT_VERSION=""
+  local local FULL_VERSION=""
+
+  case "$1" in
+    major)
+      INCREMENT_VERSION=$(__increment_version $SEM_VERSION 0)
+      ;;
+    minor)
+      INCREMENT_VERSION=$(__increment_version $SEM_VERSION 1)
+      ;;
+    patch)
+      INCREMENT_VERSION=$(__increment_version $SEM_VERSION 2)
+      ;;
+  esac
+
+  FULL_VERSION="$INCREMENT_VERSION+$((BUILD_VERSION+1))"
+  perl -i -pse 's/^(version:\s+)(\d+\.\d+\.\d+\+\d+)/${1}.($pin)/e' -- -pin="$FULL_VERSION" pubspec.yaml
+  echo -e "New version: ${yellow}${FULL_VERSION}${end}"
+}
+
+__increment_version() {
+  local delimiter=.
+  local array=($(echo "$1" | tr $delimiter '\n'))
+  array[$2]=$((array[$2]+1))
+  if [ $2 -lt 2 ]; then array[2]=0; fi
+  if [ $2 -lt 1 ]; then array[1]=0; fi
+  echo $(local IFS=$delimiter ; echo "${array[*]}")
+}
+
+__get_version() {
+  local PACKAGE_VERSION=$(cat pubspec.yaml \
+    | grep "version:\s" \
+    | head -1 \
+    | awk -F: '{ print $2 }' \
+    | tr -d '[[:space:]]')
+
+  echo "$PACKAGE_VERSION"
+}
+
+__build_flutter_app() {
+  { # try
+    echo "Clean old builds..."
+    flutter clean > /dev/null 2>&1
+
+    echo "Building appBundle..."
+    flutter packages get > /dev/null 2>&1
+    flutter build appbundle
+
+  } || { # catch
+    echo
+    echo -e "${red}Error: Build appBundle failed.${end}"
+    git checkout -f > /dev/null 2>&1
+    exit 1
+  }
+}
+
+echo "Updating repository..."
+git pull --quiet
+
+__update_version $1
+
+__build_flutter_app
+
+echo "Package release..."
+git checkout -b "release/$(__get_version)" > /dev/null 2>&1
+git add . > /dev/null 2>&1
+git commit -m "Release: $(__get_version)" > /dev/null 2>&1
+git tag "$(__get_version)" > /dev/null 2>&1
+git push --set-upstream origin "release/$(__get_version)"
+git push --tag > /dev/null 2>&1
+git checkout master > /dev/null 2>&1
+
+echo -e "${green}Done.${end}"
