@@ -1,8 +1,8 @@
 #!/bin/bash
 
 __command_exists kubectl || {
-  echo "kubernetes is not installed."
-  return
+  echo "Error: kubectl is not installed."
+  exit 1
 }
 
 COMPREPLY=()
@@ -13,18 +13,21 @@ auth_url=""
 auth_action=""
 username=""
 password=""
+REPOSITORY="$(git config --get remote.origin.url)"
 
 __k8s_usage() {
   echo ""
-  echo "     Usage: k8s login ${yellowb}<environment>${end}"
+  echo -e "     Usage: k8s <command> ${yellowb}<environment>${end}"
+  echo -e "     Where ${yellowb}<command>${end} is one of:"
+  echo -e "       ${greenb}->${end} login ${lightblue}(get authorization)${end}"
+  echo -e "       ${greenb}->${end} set-namespace ${lightblue}(set namespace in all contexts)${end}"
   echo ""
-  echo "     Where ${yellowb}<environment>${end} is one of:"
-  echo ""
+  echo -e "     And ${yellowb}<environment>${end} is one of:"
   for k8s_context in "${kubectl_clusters[@]}"; do
-    echo "       ${greenb}->${end} ${k8s_context}"
+    echo -e "       ${greenb}->${end} ${k8s_context}"
   done
   echo ""
-  printf "  ${blueb}More info:${end} https://kubernetes.io/docs/home/"
+  printf "  ${blueb}More info:${end} $REPOSITORY"
   echo ""
 }
 
@@ -57,7 +60,7 @@ _login_k8s() {
     if echo "$login_result" | grep -q "login-error"; then
       printf "\n   ${yellowb}Invalid Username and/or Password.${end}\n"
     else
-      echo "$login_result" | sed -nr 's/.*data-clipboard-text="([^"]+)".*/\1/p' | bash
+      echo "$login_result" | sed -E -n 's/.*data-clipboard-text="([^"]+)".*/\1/p' | bash
     fi
   fi
 }
