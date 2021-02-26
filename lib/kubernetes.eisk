@@ -2,7 +2,7 @@
 
 __command_exists kubectl || {
   echo "Error: kubectl is not installed."
-  exit 1
+  return
 }
 
 COMPREPLY=()
