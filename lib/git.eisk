@@ -148,40 +148,45 @@ cplist() {
     mkdir -p $1
   fi
 
-  if [ $(getSystemOS) = "Msys" ]; then
-    OLDIFS=""
-    IFS=$'\n'
-    local FILES_TO_COPY=()
-    local ARGS=true
+  OLDIFS=""
+  IFS=$'\n'
+  local FILES_TO_COPY=()
+  local ARGS=true
 
-    if [ "$1" ] && [ "$2" ]; then
-      FILES_TO_COPY=($(git diff-tree --no-commit-id --name-only -r $2))
+  if [ "$1" ] && [ "$2" ]; then
+    FILES_TO_COPY=($(git diff-tree --no-commit-id --name-only -r $2))
 
-    elif [ "$1" ]; then
-      FILES_TO_COPY=($(git status -s | awk '{if ($1 == "M" || $1 == "A") print $2}'))
+  elif [ "$1" ]; then
+    FILES_TO_COPY=($(git status -s | awk '{if ($1 == "M" || $1 == "A") print $2}'))
 
-    else
-      ARGS=false
-      echo ""
-      echo -e "Usage:"
-      echo -e "    ${purpleb}cplist <folder> <hash:optional>${end}"
-    fi
-
-    IFS=$OLDIFS
-    if ${ARGS} = true; then
-      if (( ${#FILES_TO_COPY[@]} > 0 )); then
-        echo ""
-        echo -e "${yellowb}Copy files to:${end} $1"
-        for (( i = 0; i < ${#FILES_TO_COPY[@]}; ++i )); do
-          echo -e "  > ${blueb}${FILES_TO_COPY[$i]}${end}"
-          cp --parents ${FILES_TO_COPY[$i]} $1
-        done
-      else
-        echo -e "${lightblueb}Everything is look good.${end}"
-      fi
-    fi
   else
-    echo -e "${lightblueb}Sorry, but it works only in Msys System =)${end}"
+    ARGS=false
+    echo ""
+    printf "Usage:\n"
+    printf "\n    ${purpleb}cplist <folder> <hash:optional>${end}\n"
+  fi
+
+  IFS=$OLDIFS
+  if ${ARGS} = true; then
+
+    if ((${#FILES_TO_COPY[@]} > 0)); then
+      echo ""
+      printf "${yellowb}Copy files to:${end} $1"
+      echo ""
+      for file_item in "${FILES_TO_COPY[@]}"; do
+        printf "\n  > ${blueb}${file_item}${end}"
+
+        if [ $(getSystemOS) = "Mac" ]; then
+          # echo -e "${lightblueb}Sorry, but it works only in Msys System =)${end}"
+          rsync -R ${file_item} $1
+        else
+          cp --parents ${file_item} $1
+        fi
+      done
+      echo ""
+    else
+      echo -e "${lightblueb}Everything is look good.${end}"
+    fi
   fi
 }
 
