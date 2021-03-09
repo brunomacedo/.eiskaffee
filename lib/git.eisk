@@ -209,7 +209,12 @@ gitRemote() {
 # Usage: copied <file> <destine>
 #     Example: copied ~/Desktop/myfolder
 copied() {
-  cp --parents $1 $2
+  if [ $(getSystemOS) = "Mac" ]; then
+    ditto -V $1 $2
+  else
+    cp --parents $1 $2
+  fi
+
 }
 
 # Zip folder repository
