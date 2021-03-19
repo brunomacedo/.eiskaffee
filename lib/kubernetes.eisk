@@ -1,7 +1,7 @@
 #!/bin/bash
 
 __command_exists kubectl || {
-  echo "Error: kubectl is not installed."
+  # echo "Error: kubectl is not installed."
   return
 }
 
