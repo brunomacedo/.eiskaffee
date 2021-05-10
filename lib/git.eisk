@@ -205,24 +205,42 @@ gitRemote() {
   esac
 }
 
-# Copy files with all parents folders
-# Usage: copied <file> <destine>
-#     Example: copied ~/Desktop/myfolder
 copied() {
+  if [[ $# -eq 0 ]]; then
+    echo -e """
+      Usage:   copied ${yellowb}<source> <destination>${end}
+
+      Example:
+
+        ${greenb}copied /root/myFolder ~/Desktop/myfolder${end}
+        ${greenb}copied /root/otherFolder/myFile.sh ~/Desktop/otherFolder${end}
+
+    """
+    return
+  fi
+
   if [ $(getSystemOS) = "Mac" ]; then
     ditto -V $1 $2
   else
     cp --parents $1 $2
   fi
-
 }
 
-# Zip folder repository
-# Usage: gitZip <destine/file-name> <branch:optional (master=default)>
-#     Example: gitZip ~/Desktop/myRepository
 gitZip() {
   if [[ $# -eq 0 ]]; then
-    echo "Need arguments."
+    echo -e """
+      Usage:   gitZip ${yellowb}<zip-name> <branch>${end}
+
+      Where:
+
+        ${yellowb}<zip-name>${end} : is a destination folder with a zip file name
+        ${yellowb}<branch>${end}   : branch name, optional (master=default)
+
+      Example:
+
+        ${greenb}gitZip ~/Desktop/myzipfolder mybranch${end}
+
+    """
     return
   fi
 
