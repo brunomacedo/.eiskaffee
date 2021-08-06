@@ -7,8 +7,7 @@ __command_exists kubectl || {
 
 COMPREPLY=()
 
-if $DISABLE_K8S; then
-  echo "KUBE IS NOT ENABLED $DISABLE_K8S"
+if [[ $DISABLE_K8S = true ]]; then
   kubectl_namespaces=($(kubectl get namespaces -o name | cut -d "/" -f 2))
   kubectl_contexts=($(kubectl config get-contexts -o name))
   kubectl_clusters=($(kubectl config get-clusters | grep "intranet"))
