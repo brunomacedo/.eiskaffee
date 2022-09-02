@@ -14,10 +14,10 @@ bump() {
     local getChange="$(changes)"
 
     if [ $getChange = false ]; then
-      npm version "$1" -m "Bumped to version %s"
+      npm version "$1" -m "chore(release): %s [skip ci]"
       # git push --tags
     else
-      gcommit "Before bump commit."
+      gcommit "chore(bump): before update"
     fi
   else
     echo ""
