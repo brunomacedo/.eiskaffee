@@ -1,6 +1,8 @@
 # Eiskaffee theme for ZSH
 #
-# Copy this file to: $ZSH_CUSTOM/themes/
+# Create a symbolic link:
+# ln -s $EISK_HOME/.oh-my-zsh/eiskaffee.zsh-theme $ZSH_CUSTOM/themes/eiskaffee.zsh-theme
+# And add to `.zshrc` file `ZSH_THEME="eiskaffee"`
 #
 # Prompt:
 # %F => Color codes
