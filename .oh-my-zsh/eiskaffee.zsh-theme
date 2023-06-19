@@ -53,7 +53,7 @@ zstyle ':vcs_info:*' stagedstr      "${FMT_STAGED}"
 zstyle ':vcs_info:*' actionformats  "${FMT_VCS_STATUS} ${FMT_ACTION}"
 zstyle ':vcs_info:*' formats        "${FMT_VCS_STATUS}"
 zstyle ':vcs_info:*' nvcsformats    ""
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked node-version
 
 # Check for untracked files.
 +vi-git-untracked() {
@@ -63,8 +63,15 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
     fi
 }
 
+# Show nodejs version
++vi-node-version() {
+    if which node &> /dev/null; then
+        hook_com[staged]+=" %{$fg_reset_color%}($(node -v))"
+    fi
+}
+
 # Executed before each prompt.
 add-zsh-hook precmd vcs_info
 
-# Oxide prompt style.
+# Prompt style.
 PROMPT=$'\n%{$fg_green%}%~%{$fg_reset_color%} ${vcs_info_msg_0_}\n%(?.%{%F{white}%}.%{$fg_red%})%(!.#.$)%{$fg_reset_color%} '
