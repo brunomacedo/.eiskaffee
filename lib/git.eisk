@@ -139,54 +139,55 @@ gcommit() {
   isGitRepo
 }
 
-# Copy files has been modified to specific folder
-# Usage: cplist <folder> <commit_hash:optional>
-#     Example: cplist ~/Desktop/myfolder
-#     Example: cplist ~/Desktop/myfolder 8c0902
 cplist() {
-  if [ ! -d $1 ]; then
-    mkdir -p $1
+  # Verifica se o diretório atual é um repositório Git
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo -e "${redb}Error:${end} Current directory is not a Git repository."
+    return 1
   fi
 
-  OLDIFS=""
-  IFS=$'\n'
-  local FILES_TO_COPY=()
-  local ARGS=true
-
-  if [ "$1" ] && [ "$2" ]; then
-    FILES_TO_COPY=($(git diff-tree --no-commit-id --name-only -r $2))
-
-  elif [ "$1" ]; then
-    FILES_TO_COPY=($(git status -s | awk '{if ($1 == "M" || $1 == "A") print $2}'))
-
-  else
-    ARGS=false
+  if [ -z "$1" ]; then
     echo ""
     printf "Usage:\n"
     printf "\n    ${purpleb}cplist <folder> <hash:optional>${end}\n"
+    return
+  fi
+
+  local TARGET_FOLDER="$1/$(basename $(pwd))"
+
+  if [ ! -d "$TARGET_FOLDER" ]; then
+    mkdir -p "$TARGET_FOLDER"
+  fi
+
+  OLDIFS=$IFS
+  IFS=$'\n'
+  local FILES_TO_COPY=()
+
+  if [ "$2" ]; then
+    FILES_TO_COPY=($(git diff-tree --no-commit-id --name-only -r "$2"))
+  else
+    FILES_TO_COPY=($(git status -s | awk '{if ($1 == "M" || $1 == "A") print $2}'))
   fi
 
   IFS=$OLDIFS
-  if ${ARGS} = true; then
 
-    if ((${#FILES_TO_COPY[@]} > 0)); then
-      echo ""
-      printf "${yellowb}Copy files to:${end} $1"
-      echo ""
-      for file_item in "${FILES_TO_COPY[@]}"; do
-        printf "\n  > ${blueb}${file_item}${end}"
+  if ((${#FILES_TO_COPY[@]} > 0)); then
+    echo ""
+    printf "${yellowb}Copy files to:${end} $TARGET_FOLDER"
+    echo ""
+    for file_item in "${FILES_TO_COPY[@]}"; do
+      printf "\n  > ${blueb}${file_item}${end}"
 
-        if [ $(getSystemOS) = "Mac" ]; then
-          # echo -e "${lightblueb}Sorry, but it works only in Msys System =)${end}"
-          rsync -R ${file_item} $1
-        else
-          cp --parents ${file_item} $1
-        fi
-      done
-      echo ""
-    else
-      echo -e "${lightblueb}Everything is look good.${end}"
-    fi
+      if [ "$(getSystemOS)" = "Mac" ]; then
+        # echo -e "${lightblueb}Sorry, but it works only in Msys System =)${end}"
+        rsync -R "${file_item}" "$TARGET_FOLDER"
+      else
+        cp --parents "${file_item}" "$TARGET_FOLDER"
+      fi
+    done
+    echo ""
+  else
+    echo -e "${lightblueb}Everything looks good.${end}"
   fi
 }
 
