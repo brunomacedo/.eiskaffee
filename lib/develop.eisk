@@ -33,3 +33,33 @@ hosts() {
 
   cp "$FIND_HOSTS/$1" "$FIND_HOSTS/hosts"
 }
+
+deleteFolders() {
+  usageFolderDelete() {
+    echo "Usage: deleteFolders <folder1> <folder2> ..."
+    echo "Example: deleteFolders node_modules .cache"
+  }
+
+  recursiveDeleteFolders() {
+    local base_dir="$1"
+    local folder_name="$2"
+
+    if [ ! -d "$base_dir" ]; then
+      echo "Error: Directory '$base_dir' does not exist"
+      return 1
+    fi
+
+    find "$base_dir" -depth -type d -name "$folder_name" -exec rm -rf {} \; 2>/dev/null
+
+    echo "✓ Deleted all '$folder_name' folders"
+  }
+
+  if [ $# -eq 0 ]; then
+    usageFolderDelete
+    return 1
+  fi
+
+  for folder in "$@"; do
+    recursiveDeleteFolders . "$folder"
+  done
+}
