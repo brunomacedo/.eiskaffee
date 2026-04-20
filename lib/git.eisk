@@ -50,7 +50,11 @@ update() {
   if [ $(getSystemOS) = "Msys" ]; then
     for (( i = 0; i < ${#folders[@]}; ++i )); do
       cd ${folders[$i]}
-      echo -e "Opening ${blueb}${folders[$i]}${end}"
+      local CURRENT_BRANCH="$(getCurrentBranch)"
+      if [ -z "$CURRENT_BRANCH" ]; then
+        CURRENT_BRANCH="unknown"
+      fi
+      echo -e "Opening ${blueb}${folders[$i]}${end} [${yellowb}${CURRENT_BRANCH}${end}]"
 
       isRemoteGitPull
 
@@ -61,7 +65,11 @@ update() {
   else
     for (( i = 1; i <= ${#folders[@]}; ++i )); do
       cd ${folders[$i]}
-      echo -e "Opening ${blueb}${folders[$i]}${end}"
+      local CURRENT_BRANCH="$(getCurrentBranch)"
+      if [ -z "$CURRENT_BRANCH" ]; then
+        CURRENT_BRANCH="unknown"
+      fi
+      echo -e "Opening ${blueb}${folders[$i]}${end} [${yellowb}${CURRENT_BRANCH}${end}]"
 
       isRemoteGitPull
 

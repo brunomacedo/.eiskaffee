@@ -34,6 +34,14 @@ hosts() {
   cp "$FIND_HOSTS/$1" "$FIND_HOSTS/hosts"
 }
 
+deleteFile() {
+  if [ "$1" != "" ] && [ "$1" ]; then
+    find $1 -name "$2" -delete
+  else
+    echo "Usage: deleteFile <path> <file>"
+  fi
+}
+
 deleteFolders() {
   usageFolderDelete() {
     echo "Usage: deleteFolders <folder1> <folder2> ..."

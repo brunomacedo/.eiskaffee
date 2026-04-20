@@ -17,14 +17,6 @@ dev() {
   gulp dev $1
 }
 
-deleteFile() {
-  if [ "$1" != "" ] && [ "$1" ]; then
-    find $1 -name "$2" -delete
-  else
-    echo "Usage: deleteFile <path> <file>"
-  fi
-}
-
 listAll() {
   if [ -z $1 ] || [ -z $2 ]; then
     __listAll_usage
