@@ -172,9 +172,20 @@ cplist() {
   local FILES_TO_COPY=()
 
   if [ "$2" ]; then
-    FILES_TO_COPY=($(git diff-tree --no-commit-id --name-only -r "$2"))
+    while IFS= read -r -d '' file_item; do
+      FILES_TO_COPY+=("$file_item")
+    done < <(git diff-tree --no-commit-id --name-only -r -z "$2")
   else
-    FILES_TO_COPY=($(git status -s | awk '{if ($1 == "M" || $1 == "A") print $2}'))
+    while IFS= read -r -d '' entry; do
+      # entry format from `git status -sz`: XY<space>path (NUL-terminated, no quoting)
+      local status_xy="${entry:0:2}"
+      local file_item="${entry:3}"
+      case "$status_xy" in
+        M*|A*|*M|*A)
+          FILES_TO_COPY+=("$file_item")
+          ;;
+      esac
+    done < <(git status -sz)
   fi
 
   IFS=$OLDIFS
