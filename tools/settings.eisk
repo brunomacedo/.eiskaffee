@@ -10,7 +10,7 @@ __eisk_usage() {
   printf "\nUsage: eiskaffee ${yellowb}<argument>${end}"
   printf "\n"
   printf "\nWhere <argument> is one of:"
-  printf "\n    ${purple}update, uninstall, remove${end}\n"
+  printf "\n    ${purple}update, uninstall, remove, bootstrap${end}\n"
 }
 
 eiskaffee() {
@@ -41,6 +41,12 @@ eiskaffee() {
       sh $EISK_HOME/tools/uninstall.sh
       return
       ;;
+    bootstrap)
+      shift
+      bash "$EISK_HOME/os/scripts/bootstrap.sh" "$@"
+      cd "$CURRENT_DIR"
+      return
+      ;;
    -h|--help)
       __eisk_usage
       ;;
@@ -53,7 +59,7 @@ __start_eisk() {
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
   if (( COMP_CWORD == 1 )); then
-    COMPREPLY=($(compgen -W "--help update uninstall remove" -- "$cur"))
+    COMPREPLY=($(compgen -W "--help update uninstall remove bootstrap" -- "$cur"))
     return
   fi
 
@@ -67,6 +73,10 @@ __start_eisk() {
       ;;
     uninstall|remove)
       COMPREPLY=($(compgen -W "${commands_list[*]}" -- "$cur"))
+      return
+      ;;
+    bootstrap)
+      COMPREPLY=($(compgen -W "--dry-run --with-vscode 00 10 20 30 40 50 60 70 80" -- "$cur"))
       return
       ;;
   esac
