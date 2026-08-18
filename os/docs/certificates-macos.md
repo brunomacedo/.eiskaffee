@@ -56,3 +56,7 @@ curl -I https://intranet.corp/
 ```
 
 If certificate errors persist, make sure **all** intermediates were imported into the Keychain and included in the PEM bundle.
+
+## 5. pnpm-managed Node.js specifically
+
+`os/scripts/40-node.sh` (module 40) calls `pnpm env use --global lts` to let pnpm install/manage its own Node.js build. That command fetches `https://nodejs.org/download/release/index.json`, so without `NODE_EXTRA_CA_CERTS` pointed at the bundle above it fails with `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` — pnpm itself stays installed, but Node.js is never actually pinned by pnpm, and `node` may silently resolve to something else (e.g. a Homebrew formula that pulled Node in as a dependency, such as `marp-cli`). Set the env vars from step 3, open a new shell (or `source ~/.zshrc`), and re-run `eiskaffee bootstrap 40`.

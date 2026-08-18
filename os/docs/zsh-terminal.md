@@ -16,10 +16,14 @@ If a different config already exists at the destination, it is backed up to `con
 Module `scripts/40-node.sh` reproduces this machine's real setup:
 
 1. Installs **pnpm** via its official standalone script (`curl -fsSL https://get.pnpm.io/install.sh | sh -`) — this does **not** require Node.js to be installed beforehand, and does **not** go through Homebrew or Corepack.
-2. pnpm manages its own Node.js builds internally, under `~/.local/share/pnpm/nodejs/<version>/` (see `pnpm env list` / `pnpm env use --global <version>`).
-3. Sets a global default with `pnpm env use --global lts`.
+2. Unlinks Homebrew's `node` if it is present only **as a dependency** of another formula (e.g. `marp-cli` pulls it in transitively). This keeps it installed for whatever needs it, but off `PATH`, so pnpm's own Node stays the one resolved by `node`/`npx`/etc. Idempotent — safe to re-run.
+3. pnpm manages its own Node.js builds internally, under `~/Library/pnpm/global/` (see `pnpm env list` / `pnpm env use --global <version>`).
+4. Sets a global default with `pnpm env use --global lts`.
+5. Installs **npm** itself as a plain pnpm-global package (`pnpm add -g npm`). The Node build that `pnpm env use` fetches only ships the `node` binary — it comes from the npm [`node`](https://www.npmjs.com/package/node) wrapper package, unlike the official nodejs.org tarball, which bundles `npm` under `lib/node_modules/npm`. Without this step `npm` is missing entirely (`npm is not installed.` on every new shell) even though `node` works fine.
 
 Per-project version pinning uses a `.nvmrc` file at the project root (just the version number, e.g. `24.19.0`). **The name is only a naming convention — it has no relation to nvm.** It is read exclusively by the `zsh-auto-pnpm-use` plugin below, which calls `pnpm env use --global <version>` for you.
+
+> ⚠️ **Behind a corporate TLS proxy** (Zscaler/Forcepoint/etc.), `pnpm env use` needs to fetch `https://nodejs.org/download/release/index.json` and will fail with `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` unless `NODE_EXTRA_CA_CERTS` (and friends) point to your CA bundle — see [`certificates-macos.md`](./certificates-macos.md). Without it, `40-node.sh` silently leaves Node.js unmanaged by pnpm and `node` may resolve to whatever Homebrew installed as a side dependency instead.
 
 ### The `zsh-auto-pnpm-use` plugin
 
