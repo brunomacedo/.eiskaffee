@@ -60,3 +60,18 @@ load_brew() {
     eval "$(${prefix}/bin/brew shellenv)"
   fi
 }
+
+# Unlinks Homebrew's `node` when it is installed only as a *dependency* of
+# another formula (e.g. `marp-cli`), so it doesn't shadow pnpm's own Node on
+# PATH. `brew upgrade`/`update`/`reinstall`/`bundle` relink every formula's
+# binaries, including dependency-only ones, so this needs to run again after
+# any of those — not just once during bootstrap. Idempotent and silent-safe;
+# callers decide whether to show output. Returns 0 whether or not anything
+# was unlinked (nothing to do is not an error).
+unlink_brew_node_if_dependency() {
+  is_macos && has brew || return 0
+  brew list --formula node >/dev/null 2>&1 || return 0
+  brew info --formula node 2>/dev/null | grep -q "Installed (as dependency)" || return 0
+  [[ -L "$(brew_prefix)/bin/node" ]] || return 0
+  brew unlink node >/dev/null 2>&1
+}

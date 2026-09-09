@@ -17,6 +17,7 @@ Module `scripts/40-node.sh` reproduces this machine's real setup:
 
 1. Installs **pnpm** via its official standalone script (`curl -fsSL https://get.pnpm.io/install.sh | sh -`) — this does **not** require Node.js to be installed beforehand, and does **not** go through Homebrew or Corepack.
 2. Unlinks Homebrew's `node` if it is present only **as a dependency** of another formula (e.g. `marp-cli` pulls it in transitively). This keeps it installed for whatever needs it, but off `PATH`, so pnpm's own Node stays the one resolved by `node`/`npx`/etc. Idempotent — safe to re-run.
+   - This unlink doesn't stick forever: a plain `brew upgrade`/`update`/`reinstall`/`bundle` relinks every formula's binaries, including dependency-only ones, silently bringing Homebrew's `node` back to the front of `PATH`. The `zsh-brew-node-guard` plugin below re-applies the same check automatically after those commands, so you don't need to re-run `40-node.sh` by hand each time.
 3. pnpm manages its own Node.js builds internally, under `~/Library/pnpm/global/` (see `pnpm env list` / `pnpm env use --global <version>`).
 4. Sets a global default with `pnpm env use --global lts`.
 5. Installs **npm** itself as a plain pnpm-global package (`pnpm add -g npm`). The Node build that `pnpm env use` fetches only ships the `node` binary — it comes from the npm [`node`](https://www.npmjs.com/package/node) wrapper package, unlike the official nodejs.org tarball, which bundles `npm` under `lib/node_modules/npm`. Without this step `npm` is missing entirely (`npm is not installed.` on every new shell) even though `node` works fine.
@@ -34,6 +35,12 @@ Own plugin ([`brunomacedo/zsh-auto-pnpm-use`](https://github.com/brunomacedo/zsh
 - If the directory has no `.nvmrc`, reverts to the session's default version and prints `Reverting to default node version <version>`.
 
 It intentionally does **not** use `pnpm config set/get default-node-version` (that key was removed by pnpm and is not documented in [pnpm settings](https://pnpm.io/settings)) — a plain shell variable is used instead, to avoid the `ERR_PNPM_CONFIG_SET_UNSUPPORTED_YAML_CONFIG_KEY` warning.
+
+### The `zsh-brew-node-guard` plugin
+
+Own plugin, versioned directly in this repo at [`.oh-my-zsh/zsh-brew-node-guard`](../../.oh-my-zsh/zsh-brew-node-guard) (symlinked, not cloned, by module `80-zsh-plugins.sh` — same treatment as the `eiskaffee` theme, so it stays in sync via `eiskaffee update`).
+
+It wraps the `brew` command in the shell function so that after `brew upgrade`, `update`, `reinstall`, `bundle`, `install`, or `link`, it re-runs [`os/scripts/guard-brew-node.sh`](../scripts/guard-brew-node.sh) — the same dependency-only-node unlink check from `40-node.sh`, factored into `lib.sh` as `unlink_brew_node_if_dependency`. It is silent unless it actually has to unlink something, so it doesn't add noise to routine `brew` usage.
 
 ## Zsh (Oh My Zsh theme + plugins)
 
@@ -53,6 +60,7 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-auto-pnpm-use
+  zsh-brew-node-guard
 )
 ```
 

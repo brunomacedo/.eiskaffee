@@ -38,17 +38,17 @@ fi
 # Some Brewfile formulas (e.g. marp-cli) pull Node in as a *dependency*. That
 # puts Homebrew's node ahead of pnpm's on PATH and breaks "pnpm-only" Node
 # management. Unlink it (keeps it installed for whatever depends on it, just
-# not exposed on PATH) — idempotent, safe to run every time.
-if is_macos && has brew; then
-  if brew list --formula node >/dev/null 2>&1 && brew info --formula node 2>/dev/null | grep -q "Installed (as dependency)"; then
-    if [[ -L "$(brew_prefix)/bin/node" ]]; then
-      log_info "Unlinking Homebrew's node (installed only as a dependency, e.g. of marp-cli)..."
-      run brew unlink node >/dev/null 2>&1 \
-        && log_ok "Homebrew node unlinked; pnpm's node stays first on PATH." \
-        || log_warn "Could not unlink Homebrew node. Run 'brew unlink node' manually."
-    else
-      log_ok "Homebrew node already unlinked."
-    fi
+# not exposed on PATH) — idempotent, safe to run every time. Also guarded
+# ongoing by the `zsh-brew-node-guard` plugin (module 80), since a plain
+# `brew upgrade` relinks it again without re-running this bootstrap module.
+if is_macos && has brew && brew list --formula node >/dev/null 2>&1; then
+  if [[ -L "$(brew_prefix)/bin/node" ]] && brew info --formula node 2>/dev/null | grep -q "Installed (as dependency)"; then
+    log_info "Unlinking Homebrew's node (installed only as a dependency, e.g. of marp-cli)..."
+    run unlink_brew_node_if_dependency \
+      && log_ok "Homebrew node unlinked; pnpm's node stays first on PATH." \
+      || log_warn "Could not unlink Homebrew node. Run 'brew unlink node' manually."
+  else
+    log_ok "Homebrew node already unlinked."
   fi
 fi
 
