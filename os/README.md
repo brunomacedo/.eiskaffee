@@ -105,7 +105,6 @@ These tools are large/licensed and must be installed manually:
 - **Android Studio** + Android SDK/NDK → https://developer.android.com/studio (adjust `ANDROID_HOME` and `JAVA_HOME` to the macOS paths).
 - **Tizen Studio** → https://developer.tizen.org (with the CLI and emulators).
 - **webOS TV SDK / Simulators** → https://webostv.developer.lge.com (the `ares-*` CLI goes into PATH; adjust it in `~/.zshrc`).
-- **Docker Desktop** → https://www.docker.com/products/docker-desktop
 - **Samsung certificates** (`~/SamsungCertificate/`) → transfer over a secure channel.
 
 ## 🔁 Maintenance (updating the source of truth)

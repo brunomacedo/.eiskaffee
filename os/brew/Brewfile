@@ -21,13 +21,13 @@ brew "rtk"          # CLI proxy to reduce LLM token usage
 brew "tree"         # Directory tree
 
 # --- Casks (GUI apps / installers) ---------------------------------------------
-cask "copilot-cli"  # GitHub Copilot in the terminal
+cask "copilot-cli"     # GitHub Copilot in the terminal
+cask "docker-desktop"  # Docker Desktop (Docker Engine + CLI + Compose) on macOS
 
 # =============================================================================
 # NOT managed by Brew (installed by other tools — see README):
 #   - pnpm / Node.js  -> pnpm standalone installer; Node managed via `pnpm env` (see scripts/40-node.sh)
 #   - Flutter         -> via FVM (see scripts/50-flutter.sh)
 #   - Ghostty         -> formula on Linux / cask on macOS (see scripts/70-ghostty.sh)
-#   - Docker          -> Docker Desktop on macOS (see README)
 #   - Android Studio / Tizen Studio / webOS -> manual install (see docs/)
 # =============================================================================
